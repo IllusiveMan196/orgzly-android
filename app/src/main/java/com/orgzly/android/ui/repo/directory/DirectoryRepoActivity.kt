@@ -1,10 +1,8 @@
 package com.orgzly.android.ui.repo.directory
 
 import android.app.Activity
-import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.activity.result.contract.ActivityResultContracts
@@ -17,10 +15,10 @@ import com.orgzly.android.repos.ContentRepo
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
-import com.orgzly.android.ui.repo.BrowserActivity
 import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.ui.showSnackbar
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
@@ -49,7 +47,7 @@ class DirectoryRepoActivity : CommonActivity() {
             setHorizontallyScrolling(false)
             maxLines = 3
 
-            setOnEditorActionListener { _, _, _ ->
+            setOnEditorDoneActionListener { _, _, _ ->
                 saveAndFinish()
                 true
             }

@@ -43,6 +43,7 @@ import com.orgzly.android.ui.repos.ReposActivity
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.KeyboardUtils
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.usecase.BookDelete
 import com.orgzly.android.util.LogUtils
@@ -368,7 +369,7 @@ class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<Bo
         val d = dialogBuilder.create()
 
         /* Finish on keyboard action press. */
-        dialogBinding.name.setOnEditorActionListener { _, _, _ ->
+        dialogBinding.name.setOnEditorDoneActionListener { _, _, _ ->
             d.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             true
         }

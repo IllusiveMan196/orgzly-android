@@ -13,6 +13,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
 import com.orgzly.android.ui.util.KeyboardUtils
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 
 class SimpleOneLinerDialog : DialogFragment() {
     private lateinit var requestKey: String
@@ -73,7 +74,7 @@ class SimpleOneLinerDialog : DialogFragment() {
             .create()
 
         // Perform positive button click on keyboard's action press
-        input.setOnEditorActionListener { _, _, _ ->
+        input.setOnEditorDoneActionListener { _, _, _ ->
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).performClick()
             true
         }

@@ -6,12 +6,13 @@ import android.widget.EditText
 import androidx.preference.EditTextPreferenceDialogFragmentCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceDialogFragmentCompat
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 
 class IntegerPreferenceFragment : EditTextPreferenceDialogFragmentCompat() {
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
 
-        (view.findViewById(android.R.id.edit) as? EditText)?.setOnEditorActionListener { _, _, _ ->
+        (view.findViewById(android.R.id.edit) as? EditText)?.setOnEditorDoneActionListener { _, _, _ ->
             onDialogClosed(true)
             dialog?.dismiss()
             true

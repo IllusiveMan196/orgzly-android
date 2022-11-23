@@ -25,6 +25,7 @@ import com.orgzly.android.ui.repo.RepoViewModel
 import com.orgzly.android.ui.repo.RepoViewModelFactory
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.ui.util.KeyboardUtils
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
@@ -71,7 +72,7 @@ class DropboxRepoActivity : CommonActivity() {
 
             maxLines = 3
 
-            setOnEditorActionListener { _, _, _ ->
+            setOnEditorDoneActionListener { _, _, _ ->
                 saveAndFinish()
                 finish()
                 true

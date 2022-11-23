@@ -18,6 +18,7 @@ import com.orgzly.R
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.ImageLoader
 import com.orgzly.android.ui.main.MainActivity
+import com.orgzly.android.ui.util.setOnEditorDoneActionListener
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.android.ui.views.style.CheckboxSpan
 import com.orgzly.android.ui.views.style.DrawerMarkerSpan
@@ -231,8 +232,8 @@ class RichText(context: Context, attrs: AttributeSet?) :
         }
     }
 
-    fun setOnEditorActionListener(any: TextView.OnEditorActionListener) {
-        richTextEdit.setOnEditorActionListener(any)
+    fun setOnEditorActionListener(listener: TextView.OnEditorActionListener) {
+        richTextEdit.setOnEditorDoneActionListener(listener)
     }
 
     override fun toggleDrawer(markerSpan: DrawerMarkerSpan) {

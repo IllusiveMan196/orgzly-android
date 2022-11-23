@@ -4,9 +4,13 @@ import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewTreeObserver
+import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
+import android.widget.TextView
 import com.orgzly.BuildConfig
 import com.orgzly.android.util.LogUtils
 
@@ -82,4 +86,39 @@ object KeyboardUtils {
             }
         }, delay)
     }
+
+    class OnKeyboardDoneActionListener(private val userListener: TextView.OnEditorActionListener) : TextView.OnEditorActionListener {
+        override fun onEditorAction(view: TextView, actionId: Int, event: KeyEvent?): Boolean {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, actionId, event)
+
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Calling listener on Done action")
+                userListener.onEditorAction(view, actionId, event)
+                return true
+            }
+
+            return if (event != null && event.keyCode == KeyEvent.KEYCODE_ENTER) {
+                when (event.action) {
+                    KeyEvent.ACTION_DOWN -> {
+                        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Calling listener on Enter key")
+                        userListener.onEditorAction(view, actionId, event)
+                        true
+                    }
+
+                    KeyEvent.ACTION_UP -> {
+                        true
+                    }
+
+                    else ->
+                        false
+                }
+            } else {
+                false
+            }
+        }
+    }
+}
+
+fun EditText.setOnEditorDoneActionListener(listener: TextView.OnEditorActionListener) {
+    setOnEditorActionListener(KeyboardUtils.OnKeyboardDoneActionListener(listener))
 }
