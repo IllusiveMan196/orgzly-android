@@ -28,7 +28,7 @@ public class BookChooserActivityTest extends OrgzlyTest {
     private ActivityScenario<BookChooserActivity> startActivityWithCreateShortcutAction() {
         Intent intent = new Intent(context, BookChooserActivity.class);
         intent.setAction(Intent.ACTION_CREATE_SHORTCUT);
-        return ActivityScenario.launch(intent);
+        return ActivityScenario.launchActivityForResult(intent);
     }
 
     @Before

@@ -1,11 +1,11 @@
 package com.orgzly.android.util;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import com.orgzly.android.prefs.AppPreferences;
 
 import org.junit.Test;
-
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
 
 public class OrgFormatterStyleTextTest extends OrgFormatterTest {
     @Test

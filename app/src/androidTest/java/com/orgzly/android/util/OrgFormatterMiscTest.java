@@ -1,8 +1,8 @@
 package com.orgzly.android.util;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
-import static org.junit.Assert.assertThat;
 
 import com.orgzly.android.ui.views.style.UrlLinkSpan;
 

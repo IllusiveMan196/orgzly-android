@@ -5,8 +5,8 @@ import com.orgzly.android.ui.views.style.FileOrNotLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
 import com.orgzly.android.ui.views.style.UrlLinkSpan
 import org.hamcrest.CoreMatchers.equalTo
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
-import org.junit.Assert.assertThat
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -49,9 +49,7 @@ class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
     override fun tearDown() {
         super.tearDown()
 
-        File(context.cacheDir, "orgzly-tests").let { dir ->
-            dir.deleteRecursively()
-        }
+        File(context.cacheDir, "orgzly-tests").deleteRecursively()
     }
 
     companion object {
