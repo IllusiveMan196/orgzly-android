@@ -21,7 +21,8 @@ import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.Selection
+import com.orgzly.android.ui.notes.SelectionBackground
 import com.orgzly.android.ui.util.goneUnless
 import com.orgzly.android.ui.util.styledAttributes
 import com.orgzly.databinding.ItemBookBinding
@@ -184,7 +185,8 @@ class BooksAdapter(
             /* If it's a dummy book - change opacity. */
             itemView.alpha = if (item.book.isDummy) 0.4f else 1f
 
-            getSelection().setBackgroundIfSelected(binding.itemBookContainer, item.book.id)
+            SelectionBackground.setIfSelected(
+                getSelection().contains(item.book.id), binding.itemBookContainer)
         }
     }
 

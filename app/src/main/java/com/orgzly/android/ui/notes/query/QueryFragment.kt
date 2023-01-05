@@ -4,16 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.widget.PopupWindow
 import androidx.lifecycle.ViewModelProvider
 import com.orgzly.R
 import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
-import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.NotesFragment
 import com.orgzly.android.ui.settings.SettingsActivity
 

@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.Selection
 import com.orgzly.databinding.ItemListWidgetSelectionBinding
 
 class ListWidgetSelectionAdapter(

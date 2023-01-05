@@ -10,6 +10,7 @@ import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
@@ -27,10 +28,7 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.drawer.DrawerItem
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.ui.main.setupSearchView
-import com.orgzly.android.ui.notes.ItemGestureDetector
-import com.orgzly.android.ui.notes.NoteItemViewHolder
-import com.orgzly.android.ui.notes.NotePopup
-import com.orgzly.android.ui.notes.NotesFragment
+import com.orgzly.android.ui.notes.*
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MODE
 import com.orgzly.android.ui.notes.book.BookViewModel.Companion.APP_BAR_SELECTION_MOVE_MODE
@@ -151,19 +149,16 @@ class BookFragment :
              */
             rv.itemAnimator = null
 
-            rv.addOnItemTouchListener(ItemGestureDetector(rv.context, object: ItemGestureDetector.Listener {
-                override fun onSwipe(direction: Int, e1: MotionEvent, e2: MotionEvent) {
-                    rv.findChildViewUnder(e1.x, e1.y)?.let { itemView ->
-                        rv.findContainingViewHolder(itemView)?.let { vh ->
-                            (vh as? NoteItemViewHolder)?.let {
-                                showPopupWindow(vh.itemId, NotePopup.Location.BOOK, direction, itemView, e1, e2) { noteId, buttonId ->
-                                    handleActionItemClick(setOf(noteId), buttonId)
-                                }
-                            }
-                        }
-                    }
+            attachNoteItemTouchHelper(rv, viewAdapter) { vh, direction ->
+                showPopupWindow(
+                    vh.itemId,
+                    vh.itemView,
+                    NotePopup.Location.BOOK,
+                    direction
+                ) { noteId, buttonId ->
+                    handleActionItemClick(setOf(noteId), buttonId)
                 }
-            }))
+            }
         }
 
         binding.swipeContainer.setup()

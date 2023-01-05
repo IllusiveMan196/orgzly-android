@@ -1,16 +1,17 @@
 package com.orgzly.android.ui.savedsearches
 
 import android.util.Log
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.Selection
+import com.orgzly.android.ui.notes.SelectionBackground
 import com.orgzly.databinding.ItemSavedSearchBinding
 
 class SavedSearchesAdapter(
@@ -64,7 +65,8 @@ class SavedSearchesAdapter(
             name.text = savedSearch.name
             query.text = savedSearch.query
 
-            getSelection().setBackgroundIfSelected(container, savedSearch.id)
+            SelectionBackground.setIfSelected(
+                getSelection().contains(savedSearch.id), container)
         }
     }
 

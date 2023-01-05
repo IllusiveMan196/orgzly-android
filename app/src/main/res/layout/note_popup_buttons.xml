@@ -6,10 +6,12 @@
     android:layout_height="wrap_content"
     android:scrollbars="none">
 
+    <!-- Using specific height to avoid resizing buttons
+         when they can't fit the screen for the note at the bottom. -->
     <LinearLayout
         android:id="@+id/group"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:orientation="horizontal">
 
         <!-- Programmatically added -->

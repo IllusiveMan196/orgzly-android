@@ -13,9 +13,10 @@ import com.orgzly.android.db.entity.Note
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
+import com.orgzly.android.ui.notes.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.SelectionBackground
 import com.orgzly.databinding.ItemHeadBinding
 import com.orgzly.databinding.ItemPrefaceBinding
 
@@ -112,7 +113,8 @@ class BookAdapter(
 
                 noteItemViewBinder.bind(holder, noteView)
 
-                getSelection().setBackgroundIfSelected(holder.itemView, note.id)
+                SelectionBackground.setIfSelected(
+                    getSelection().contains(note.id), holder.itemView)
             }
         }
     }

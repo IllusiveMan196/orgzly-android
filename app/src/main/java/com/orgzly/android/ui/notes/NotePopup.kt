@@ -3,15 +3,16 @@ package com.orgzly.android.ui.notes
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.util.TypedValue
+import android.os.Build
 import android.view.Gravity
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.PopupWindow
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
+import androidx.recyclerview.widget.ItemTouchHelper
+import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.button.MaterialButton
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -24,13 +25,14 @@ fun interface NotePopupListener {
     fun onPopupButtonClick(itemId: Long, @IdRes buttonId: Int)
 }
 
+
 object NotePopup {
     enum class Location {
         BOOK,
         QUERY
     }
 
-    fun showWindow(itemId: Long, anchor: View, location: Location, direction: Int, e1: MotionEvent, e2: MotionEvent, listener: NotePopupListener): PopupWindow? {
+    fun showWindow(itemId: Long, anchor: View, location: Location, direction: Int, listener: NotePopupListener): PopupWindow? {
         val context = anchor.context
 
         val actions = getActionsForLocation(context, location, direction)
@@ -50,9 +52,7 @@ object NotePopup {
         val width = LinearLayout.LayoutParams.WRAP_CONTENT
         val height = LinearLayout.LayoutParams.WRAP_CONTENT
 
-        val focusable = false
-
-        val popupWindow = PopupWindow(popupView, width, height, focusable).apply {
+        val popupWindow = PopupWindow(popupView, width, height, false).apply {
             isOutsideTouchable = true
 
             // Required on API 21 and 22 (Lollipop) so it can be dismissed on outside click
@@ -78,38 +78,31 @@ object NotePopup {
 
         val gravity = Gravity.START or Gravity.TOP
 
-        // End position of the swipe
-        val x = e2.rawX.toInt()
-
-        // Starting position of the swipe
-        val y = e1.rawY.toInt()
-
         // Top left of the anchor
         val (anchorX, anchorY) = IntArray(2).also { arr ->
             anchor.getLocationInWindow(arr)
         }
 
-        // Finger size
-        val fingerSize = TypedValue.applyDimension(
-            TypedValue.COMPLEX_UNIT_MM, 16f /* From Espresso's Press.FINGER */,
-            context.resources.displayMetrics
-        ).toInt()
+        // Avoid resizing popup if it cannot fit.
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//            popupWindow.setIsClippedToScreen(true)
+//        }
 
-        // Open more to the left, if swiping from right
-        // val betterX = if (e2.x < e1.x) { x - fingerSize } else { x }
+        // Don't use showAsDropDown() if anchor's top is out of view (to avoid scrolling).
+        // popupWindow.setAllowScrollingAnchorParent(false)
+        if (anchorY < 0) {
+            val yOffset =
+                anchor.rootView.findViewById<MaterialToolbar>(R.id.top_toolbar).let { toolbar ->
+                    toolbar?.layoutParams?.height ?: anchorY
+                }
 
-        // Not across the edge of anchor
-        // val usedX = betterX.coerceAtLeast(anchorX)
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, anchorY, "showAtLocation", anchorX, yOffset)
+            popupWindow.showAtLocation(anchor, gravity, anchorX, yOffset)
 
-        // Open above the finger
-        val betterY = y - fingerSize
-
-        // Not higher then the anchor
-        val usedY = betterY.coerceAtLeast(anchorY)
-
-        popupWindow.showAtLocation(anchor, gravity, x, usedY)
-
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, anchorY, y, fingerSize, betterY, usedY)
+        } else {
+            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, anchorY, "showAsDropDown")
+            popupWindow.showAsDropDown(anchor)
+        }
 
         return popupWindow
     }
@@ -123,10 +116,14 @@ object NotePopup {
 
     private fun preferenceKeyForLocation(location: Location, direction: Int): Int {
         return when {
-            location == Location.BOOK && direction < 0 -> R.string.pref_key_note_popup_buttons_in_book_left
-            location == Location.BOOK && direction > 0 -> R.string.pref_key_note_popup_buttons_in_book_right
-            location == Location.QUERY && direction < 0 -> R.string.pref_key_note_popup_buttons_in_query_left
-            location == Location.QUERY && direction > 0 -> R.string.pref_key_note_popup_buttons_in_query_right
+            location == Location.BOOK && direction == ItemTouchHelper.LEFT ->
+                R.string.pref_key_note_popup_buttons_in_book_left
+            location == Location.BOOK && direction == ItemTouchHelper.RIGHT ->
+                R.string.pref_key_note_popup_buttons_in_book_right
+            location == Location.QUERY && direction == ItemTouchHelper.LEFT ->
+                R.string.pref_key_note_popup_buttons_in_query_left
+            location == Location.QUERY && direction == ItemTouchHelper.RIGHT ->
+                R.string.pref_key_note_popup_buttons_in_query_right
 
             else -> throw IllegalArgumentException("No buttons for $location/$direction")
         }

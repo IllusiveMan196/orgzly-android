@@ -2,11 +2,12 @@ package com.orgzly.android.ui.notes
 
 import android.content.Context
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.widget.PopupWindow
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -40,33 +41,32 @@ abstract class NotesFragment : CommonFragment(), TimestampDialogFragment.OnDateT
     private var notePopup: PopupWindow? = null
 
     protected fun showPopupWindow(
-        noteId: Long,
+        itemId: Long,
+        itemView: View,
         location: NotePopup.Location,
         direction: Int,
-        itemView: View,
-        e1: MotionEvent,
-        e2: MotionEvent,
         listener: NotePopupListener
-    ): PopupWindow? {
+    ) {
+        val anchor = itemView.findViewById<View>(R.id.item_head_title) ?: return
 
-        val anchor = itemView.findViewById<View>(R.id.item_head_title)
-
-        notePopup = NotePopup.showWindow(noteId, anchor, location, direction, e1, e2) { _, buttonId ->
-            listener.onPopupButtonClick(noteId, buttonId)
+        notePopup = NotePopup.showWindow(itemId, anchor, location, direction) { _, buttonId ->
+            listener.onPopupButtonClick(itemId, buttonId)
         }
 
         // Enable back handler if popup is shown
         if (notePopup != null) {
             notePopupDismissOnBackPress.isEnabled = true
+            SelectionBackground.setIfSelected(true, itemView)
         }
 
         // Disable back handler on dismiss
         notePopup?.setOnDismissListener {
             notePopup = null
             notePopupDismissOnBackPress.isEnabled = false
-        }
 
-        return notePopup
+            SelectionBackground.setIfSelected(
+                getAdapter()?.getSelection()?.contains(itemId) ?: false, itemView)
+        }
     }
 
     protected val notePopupDismissOnBackPress = object : OnBackPressedCallback(false) {
@@ -125,6 +125,26 @@ abstract class NotesFragment : CommonFragment(), TimestampDialogFragment.OnDateT
         if (savedInstanceState != null) {
             getAdapter()?.getSelection()?.restoreIds(savedInstanceState)
         }
+    }
+
+    protected fun attachNoteItemTouchHelper(
+        recyclerView: RecyclerView,
+        viewAdapter: SelectableItemAdapter,
+        onSwipe: (viewHolder: NoteItemViewHolder, direction: Int) -> Unit) {
+
+        var itemTouchHelper: ItemTouchHelper? = null
+        val noteItemTouchHelperCallback = NoteItemTouchHelperCallback(viewAdapter) { vh, direction ->
+            // First click after swipe is not registered by RecyclerView.
+            // Workaround: https://stackoverflow.com/q/31787272/2515600
+            itemTouchHelper?.attachToRecyclerView(null)
+            itemTouchHelper?.attachToRecyclerView(recyclerView)
+
+            if (vh is NoteItemViewHolder) {
+                onSwipe(vh, direction)
+            }
+        }
+        itemTouchHelper = ItemTouchHelper(noteItemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
     }
 
     protected fun openNoteStateDialog(listener: Listener, noteIds: Set<Long>, currentState: String?) {

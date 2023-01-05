@@ -1,10 +1,6 @@
-package com.orgzly.android.ui
+package com.orgzly.android.ui.notes
 
 import android.os.Bundle
-import android.view.View
-import androidx.annotation.ColorInt
-import com.orgzly.R
-import com.orgzly.android.ui.util.styledAttributes
 import java.util.*
 
 class Selection {
@@ -94,24 +90,6 @@ class Selection {
                     this.idSet.add(id)
                 }
             }
-        }
-    }
-
-    @ColorInt
-    private var selectionBgColor = 0
-
-    fun setBackgroundIfSelected(view: View, id: Long) {
-        if (contains(id)) {
-            if (selectionBgColor == 0) {
-                selectionBgColor = view.context.styledAttributes(intArrayOf(R.attr.colorSecondaryContainer)) { typedArray ->
-                    typedArray.getColor(0, 0)
-                }
-            }
-
-            view.setBackgroundColor(selectionBgColor)
-
-        } else {
-            view.setBackgroundResource(0)
         }
     }
 

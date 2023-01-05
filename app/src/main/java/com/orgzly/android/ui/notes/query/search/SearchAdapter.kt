@@ -1,18 +1,19 @@
 package com.orgzly.android.ui.notes.query.search
 
 import android.content.Context
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.Selection
+import com.orgzly.android.ui.notes.SelectionBackground
 import com.orgzly.databinding.ItemHeadBinding
 
 class SearchAdapter(
@@ -50,7 +51,8 @@ class SearchAdapter(
 
         noteItemViewBinder.bind(holder, noteView)
 
-        getSelection().setBackgroundIfSelected(holder.itemView, note.id)
+        SelectionBackground.setIfSelected(
+            getSelection().contains(note.id), holder.itemView)
     }
 
     override fun getItemId(position: Int): Long {

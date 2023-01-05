@@ -10,9 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.orgzly.R
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
-import com.orgzly.android.ui.Selection
 import com.orgzly.android.ui.notes.NoteItemViewBinder
 import com.orgzly.android.ui.notes.NoteItemViewHolder
+import com.orgzly.android.ui.notes.Selection
+import com.orgzly.android.ui.notes.SelectionBackground
 import com.orgzly.android.ui.stickyheaders.StickyHeaders
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.databinding.ItemAgendaDividerBinding
@@ -81,7 +82,8 @@ class AgendaAdapter(
 
                 noteViewBinder.bind(holder, item.note, item.timeType)
 
-                getSelection().setBackgroundIfSelected(holder.itemView, item.id)
+                SelectionBackground.setIfSelected(
+                    getSelection().contains(item.id), holder.itemView)
             }
         }
     }
