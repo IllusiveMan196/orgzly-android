@@ -10,7 +10,6 @@ import android.view.*
 import androidx.activity.OnBackPressedCallback
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
@@ -536,7 +535,7 @@ class BookFragment :
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -555,7 +554,7 @@ class BookFragment :
             hideMenuItemsBasedOnSelection(menu)
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -580,11 +579,7 @@ class BookFragment :
             }
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(
-                    viewAdapter.getSelection().getIds(),
-                    menuItem.itemId,
-                    menuItem
-                )
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 true
             }
 
@@ -603,7 +598,7 @@ class BookFragment :
             hideMenuItemsBasedOnSelection(menu)
 
             setOnMenuItemClickListener { menuItem ->
-                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId, menuItem)
+                handleActionItemClick(viewAdapter.getSelection().getIds(), menuItem.itemId)
                 false
             }
 
@@ -620,8 +615,8 @@ class BookFragment :
         }
     }
 
-    private fun handleActionItemClick(ids: Set<Long>, itemId: Int, item: MenuItem? = null) {
-        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, ids, itemId, item)
+    private fun handleActionItemClick(ids: Set<Long>, itemId: Int) {
+        if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, ids, itemId)
 
         if (ids.isEmpty()) {
             Log.e(TAG, "Cannot handle action when there are no items selected")

@@ -26,7 +26,7 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.foundSpans[1].start, is(23));
         assertThat(spannable.foundSpans[1].end, is(45));
-        assertThat(spannable.foundSpans[0].span, instanceOf(UrlLinkSpan.class));
+        assertThat(spannable.foundSpans[1].span, instanceOf(UrlLinkSpan.class));
         assertThat(spannable.foundSpans[1].url, is("https://www.orgzly.com"));
     }
 
@@ -61,12 +61,12 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.foundSpans[1].start, is(25));
         assertThat(spannable.foundSpans[1].end, is(41));
-        assertThat(spannable.foundSpans[0].span, instanceOf(UrlLinkSpan.class));
+        assertThat(spannable.foundSpans[1].span, instanceOf(UrlLinkSpan.class));
         assertThat(spannable.foundSpans[1].url, is("http://www.y.com"));
 
         assertThat(spannable.foundSpans[2].start, is(45));
         assertThat(spannable.foundSpans[2].end, is(46));
-        assertThat(spannable.foundSpans[0].span, instanceOf(UrlLinkSpan.class));
+        assertThat(spannable.foundSpans[2].span, instanceOf(UrlLinkSpan.class));
         assertThat(spannable.foundSpans[2].url, is("http://www.z.com"));
     }
 
@@ -86,12 +86,12 @@ public class OrgFormatterMiscTest extends OrgFormatterTest {
 
         assertThat(spannable.foundSpans[1].start, is(23));
         assertThat(spannable.foundSpans[1].end, is(37));
-        assertThat(spannable.foundSpans[0].span, instanceOf(UrlLinkSpan.class));
+        assertThat(spannable.foundSpans[1].span, instanceOf(UrlLinkSpan.class));
         assertThat(spannable.foundSpans[1].url, is("mailto:y@y.com"));
 
         assertThat(spannable.foundSpans[2].start, is(41));
         assertThat(spannable.foundSpans[2].end, is(42));
-        assertThat(spannable.foundSpans[0].span, instanceOf(UrlLinkSpan.class));
+        assertThat(spannable.foundSpans[2].span, instanceOf(UrlLinkSpan.class));
         assertThat(spannable.foundSpans[2].url, is("mailto:z@z.com"));
     }
 
