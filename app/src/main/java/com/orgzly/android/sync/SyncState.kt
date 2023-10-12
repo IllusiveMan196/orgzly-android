@@ -7,6 +7,8 @@ import com.orgzly.R
 
 data class SyncState(val type: Type, val message: String? = null, val current: Int, val total: Int) {
     enum class Type {
+        NEVER_RAN,
+
         CANCELING,
 
         STARTING,
@@ -76,6 +78,7 @@ data class SyncState(val type: Type, val message: String? = null, val current: I
                 Type.BOOK_STARTED -> getString(R.string.syncing_book, message)
                 Type.BOOK_ENDED -> getString(R.string.syncing_in_progress)
 
+                Type.NEVER_RAN -> null
                 Type.AUTO_SYNC_NOT_STARTED -> null
                 Type.FINISHED -> null
                 Type.CANCELED -> getString(R.string.last_sync_with_argument, getString(R.string.canceled))
@@ -131,8 +134,8 @@ data class SyncState(val type: Type, val message: String? = null, val current: I
         }
 
         @JvmStatic
-        fun fromData(data: Data): SyncState? {
-            val type = data.getString(DATA_TYPE) ?: return null
+        fun fromData(data: Data): SyncState {
+            val type = data.getString(DATA_TYPE) ?: return getInstance(Type.NEVER_RAN)
             val message = data.getString(DATA_MESSAGE)
             val current = data.getInt(DATA_CURRENT, 0)
             val total = data.getInt(DATA_TOTAL, 0)

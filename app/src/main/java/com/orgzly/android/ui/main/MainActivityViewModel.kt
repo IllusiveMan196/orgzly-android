@@ -3,7 +3,7 @@ package com.orgzly.android.ui.main
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.switchMap
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
@@ -22,7 +22,7 @@ import java.io.File
 class MainActivityViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
-    private val booksSubject: LiveData<List<BookView>> = Transformations.switchMap(booksParams) {
+    private val booksSubject: LiveData<List<BookView>> = booksParams.switchMap {
         dataRepository.getBooksLiveData()
     }
 

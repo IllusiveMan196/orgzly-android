@@ -4,7 +4,7 @@ import android.content.Intent
 import androidx.core.content.ContextCompat.startActivity
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
 import androidx.work.*
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -65,7 +65,7 @@ object SyncRunner {
 
     @JvmStatic
     fun onStateChange(tag: String): LiveData<SyncState> {
-        return Transformations.map(onAllWorkInfo()) { workInfoList ->
+        return onAllWorkInfo().map { workInfoList ->
             syncStateFromWorkInfoList(workInfoList).also { state ->
                 logStateChange(tag, state, workInfoList)
             }
@@ -94,26 +94,23 @@ object SyncRunner {
             .getWorkInfosForUniqueWorkLiveData(UNIQUE_WORK_NAME)
     }
 
-    private fun syncStateFromWorkInfoList(workInfoList: List<WorkInfo>): SyncState? {
-        if (workInfoList.isEmpty()) {
-            return null
-        }
+    private fun syncStateFromWorkInfoList(workInfoList: List<WorkInfo>): SyncState {
+        if (workInfoList.isNotEmpty()) {
+            val oneAndOnlyWorker = workInfoList.first()
 
-        val oneAndOnlyWorker = workInfoList.first()
+            oneAndOnlyWorker.run {
+                if (state == WorkInfo.State.CANCELLED) {
+                    return SyncState.getInstance(SyncState.Type.CANCELED)
 
-        oneAndOnlyWorker.run {
-            if (state == WorkInfo.State.CANCELLED) {
-                return SyncState.getInstance(SyncState.Type.CANCELED)
+                } else if (state == WorkInfo.State.RUNNING || state == WorkInfo.State.ENQUEUED) {
+                    return SyncState.fromData(progress)
 
-            } else if (state == WorkInfo.State.RUNNING || state == WorkInfo.State.ENQUEUED) {
-                return SyncState.fromData(progress)
-                    ?: SyncState.getInstance(SyncState.Type.STARTING)
-
-            } else if (state.isFinished) {
-                return SyncState.fromData(outputData)
+                } else if (state.isFinished) {
+                    return SyncState.fromData(outputData)
+                }
             }
         }
 
-        return null
+        return SyncState.getInstance(SyncState.Type.FINISHED)
     }
 }

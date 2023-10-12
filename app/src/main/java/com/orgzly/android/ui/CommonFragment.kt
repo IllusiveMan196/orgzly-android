@@ -34,10 +34,7 @@ open class CommonFragment : Fragment() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 syncProgressViewModel.syncState.collect { state ->
                     if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "MutableSharedFlow", state)
-
-                    if (state != null) {
-                        updateSyncProgressIndicator(view, state)
-                    }
+                    updateSyncProgressIndicator(view, state)
                 }
             }
         }
@@ -63,6 +60,7 @@ open class CommonFragment : Fragment() {
                 progressIndicator.visibility = View.VISIBLE
             }
 
+            NEVER_RAN,
             AUTO_SYNC_NOT_STARTED,
             FINISHED,
             CANCELED,

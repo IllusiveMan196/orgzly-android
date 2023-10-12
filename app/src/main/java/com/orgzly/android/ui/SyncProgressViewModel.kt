@@ -20,7 +20,7 @@ class SyncProgressViewModel : ViewModel() {
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    val syncState: Flow<SyncState?> = _syncState.distinctUntilChanged()
+    val syncState: Flow<SyncState> = _syncState.distinctUntilChanged()
 
     init {
         viewModelScope.launch {

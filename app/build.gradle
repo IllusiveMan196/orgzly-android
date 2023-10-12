@@ -5,13 +5,17 @@ apply plugin: 'kotlin-kapt'
 
 android {
     namespace 'com.orgzly'
-
-    compileSdkVersion 32
+    compileSdk 34
 
     defaultConfig {
-        minSdkVersion 21 // Lollipop (5.0)
-        targetSdkVersion 32 // Android 12L
+        // Android 5.0 (Lollipop)
+        minSdkVersion 21
+
+        // Android 14
+        targetSdkVersion 34
+
         applicationId "com.orgzly"
+
         versionCode 171
         versionName "1.8.10"
 
@@ -35,6 +39,7 @@ android {
 
     buildFeatures {
         viewBinding true
+        buildConfig true
     }
 
 //    testOptions {
@@ -60,7 +65,7 @@ android {
         }
     }
 
-    flavorDimensions "store"
+    flavorDimensions = ["store"]
 
     productFlavors {
         premium {
@@ -85,12 +90,12 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_11
-        targetCompatibility JavaVersion.VERSION_11
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
 
     kotlinOptions {
-        jvmTarget = 11
+        jvmTarget = 17
     }
 
     packagingOptions {
@@ -139,7 +144,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:$versions.android_lifecycle")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:$versions.android_lifecycle")
 
-    androidTestImplementation "androidx.annotation:annotation:$versions.android_annotation"
+    implementation("androidx.annotation:annotation:$versions.android_annotation")
 
     implementation "androidx.work:work-runtime-ktx:$versions.android_workmanager"
 
@@ -149,8 +154,8 @@ dependencies {
     androidTestImplementation "androidx.test.espresso:espresso-core:$versions.android_test_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-contrib:$versions.android_test_espresso"
     androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.android_test_espresso"
-    androidTestImplementation "androidx.test:runner:$versions.android_test"
-    androidTestImplementation "androidx.test:rules:$versions.android_test"
+    androidTestImplementation "androidx.test:runner:$versions.android_test_runner"
+    androidTestImplementation "androidx.test:rules:$versions.android_test_rules"
     androidTestImplementation "androidx.test.ext:junit:$versions.android_test_ext_junit"
 
     // For ANDROIDX_TEST_ORCHESTRATOR

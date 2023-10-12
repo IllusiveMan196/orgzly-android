@@ -95,13 +95,13 @@ class SyncFragment : Fragment() {
 
         val syncButton = SyncButton(view)
 
-        viewModel.state.observe(viewLifecycleOwner) { state: SyncState? ->
-            if (state == null || state.isRunning()) {
-                // Allow snackbar for failures as soon as sync is seen working
+        viewModel.state.observe(viewLifecycleOwner) { state: SyncState ->
+            if (state.isRunning()) {
+                // Allow snackbar for failures as soon as sync has been seen working
                 viewModel.allowSnackbarOnFailure = true
             }
 
-            if (state != null) {
+            if (state.type != SyncState.Type.NEVER_RAN) {
                 syncButton.updateUi(state)
 
                 if (!state.isRunning()) {
@@ -114,8 +114,9 @@ class SyncFragment : Fragment() {
                     // Disallow snackbar if sync is not running
                     viewModel.allowSnackbarOnFailure = false
                 }
+
             } else {
-                // Never ran or unknown
+                // Never ran
                 syncButton.updateUi(getInstance(SyncState.Type.FINISHED))
             }
         }
@@ -198,6 +199,7 @@ class SyncFragment : Fragment() {
                     setAnimation(true)
                 }
 
+                SyncState.Type.NEVER_RAN,
                 SyncState.Type.AUTO_SYNC_NOT_STARTED,
                 SyncState.Type.FINISHED,
                 SyncState.Type.CANCELED,

@@ -2,7 +2,8 @@ package com.orgzly.android.ui.books
 
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.map
+import androidx.lifecycle.switchMap
 import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.BookFormat
@@ -15,7 +16,6 @@ import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
-import java.io.File
 
 
 class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
@@ -40,8 +40,8 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
     val viewState = MutableLiveData<ViewState>(ViewState.LOADING)
 
-    val data = Transformations.switchMap(booksParams) {
-        Transformations.map(dataRepository.getBooksLiveData()) { books ->
+    val data = booksParams.switchMap {
+        dataRepository.getBooksLiveData().map { books ->
             viewState.value = if (books.isNotEmpty()) {
                 ViewState.LOADED
             } else {
