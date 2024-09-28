@@ -1,0 +1,113 @@
+[versions]
+
+androidGradlePlugin = "8.6.1"
+kotlinGradlePlugin = '1.9.24'
+
+kotlinxCoroutinesAndroid = "1.8.0"
+
+androidxAnnotation = "1.7.0"
+
+androidxMultidex = "2.0.1"
+
+androidxAppcompat = "1.7.0"
+
+androidxDocumentfile = "1.0.1"
+androidxLocalbroadcastmanager = "1.1.0"
+androidxWorkRuntime = "2.9.0"
+
+androidxCardview = "1.0.0"
+androidxRecyclerview = "1.3.2"
+androidxViewpager = "1.0.0"
+androidxConstraintlayout = "2.1.4"
+androidxPreferenceKtx = "1.2.1"
+androidxSwiperefreshlayout = "1.1.0"
+
+material = "1.12.0"
+
+androidxRoom = "2.6.1"
+
+androidxLifecycle = "2.8.2"
+
+androidxTestEspresso = "3.5.1"
+androidxTestRunner = "1.5.2"
+androidxTestRules = "1.5.0"
+androidxTestExtJunit = "1.1.5"
+androidxTestUiautomator = "2.3.0"
+
+junit = "4.13.2"
+loremipsum = '1.0'
+
+dagger = '2.51.1'
+orgzlyOrgJava = '1.3-SNAPSHOT'
+gson = "2.10.1"
+dropbox = "5.4.6"
+juniversalchardet = '1.0.3'
+jodaTime = "2.12.5"
+glide = "4.14.2"
+sardine = "0.8"
+okhttp = "4.10.0-RC1"
+okhttpDigest = "3.1.0"
+jgit = "5.13.0.202109080827-r"
+
+[libraries]
+
+android-gradle-plugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+kotlin-gradle-plugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlinGradlePlugin" }
+
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+
+androidx-annotation = { group = "androidx.annotation", name = "annotation", version.ref = "androidxAnnotation" }
+
+androidx-multidex = { group = "androidx.multidex", name = "multidex", version.ref = "androidxMultidex" }
+
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "androidxAppcompat" }
+
+androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version.ref = "androidxDocumentfile" }
+androidx-localbroadcastmanager = { group = "androidx.localbroadcastmanager", name = "localbroadcastmanager", version.ref = "androidxLocalbroadcastmanager" }
+androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "androidxWorkRuntime" }
+
+androidx-cardview = { group = "androidx.cardview", name = "cardview", version.ref = "androidxCardview" }
+androidx-recyclerview = { group = "androidx.recyclerview", name = "recyclerview", version.ref = "androidxRecyclerview" }
+androidx-viewpager = { group = "androidx.viewpager", name = "viewpager", version.ref = "androidxViewpager" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidxConstraintlayout" }
+androidx-preference-ktx = { group = "androidx.preference", name = "preference-ktx", version.ref = "androidxPreferenceKtx" }
+androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "androidxSwiperefreshlayout" }
+
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+
+androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "androidxRoom" }
+androidx-room-testing = { group = "androidx.room", name = "room-testing", version.ref = "androidxRoom" }
+androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "androidxRoom" }
+androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "androidxRoom" }
+
+androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-livedata-ktx = { group = "androidx.lifecycle", name = "lifecycle-livedata-ktx", version.ref = "androidxLifecycle" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "androidxLifecycle" }
+
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "androidxTestEspresso" }
+androidx-test-espresso-contrib = { group = "androidx.test.espresso", name = "espresso-contrib", version.ref = "androidxTestEspresso" }
+androidx-test-espresso-intents = { group = "androidx.test.espresso", name = "espresso-intents", version.ref = "androidxTestEspresso" }
+androidx-test-runner = { group = "androidx.test", name = "runner", version.ref = "androidxTestRunner" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "androidxTestRules" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidxTestExtJunit" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "androidxTestUiautomator" }
+
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+loremipsum = { group = "de.sven-jacobs", name = "loremipsum", version.ref = "loremipsum" }
+
+dagger = { group = "com.google.dagger", name = "dagger", version.ref = "dagger" }
+dagger-compiler = { group = "com.google.dagger", name = "dagger-compiler", version.ref = "dagger" }
+orgzly-org-java = { group = "com.orgzly", name = "org-java", version.ref = "orgzlyOrgJava" }
+gson = { group = "com.google.code.gson", name = "gson", version.ref = "gson" }
+dropbox-core-sdk = { group = "com.dropbox.core", name = "dropbox-core-sdk", version.ref = "dropbox" }
+juniversalchardet = { group = "com.googlecode.juniversalchardet", name = "juniversalchardet", version.ref = "juniversalchardet" }
+joda-time = { group = "joda-time", name = "joda-time", version.ref = "jodaTime" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+sardine = { group = "com.github.thegrizzlylabs", name = "sardine-android", version.ref = "sardine" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttp" }
+okhttp-digest = { group = "io.github.rburgst", name = "okhttp-digest", version.ref = "okhttpDigest" }
+jgit = { group = "org.eclipse.jgit", name = "org.eclipse.jgit", version.ref = "jgit" }
+jgit-ssh-jsch = { group = "org.eclipse.jgit", name = "org.eclipse.jgit.ssh.jsch", version.ref = "jgit" }
+
+[plugins]
+

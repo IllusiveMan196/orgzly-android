@@ -111,88 +111,80 @@ android {
 }
 
 dependencies {
-    implementation orgJavaLocation()
+    implementation(libs.kotlinx.coroutines.android)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:$versions.kotlin_coroutines")
+    implementation(libs.androidx.annotation)
 
-    implementation "org.jetbrains:annotations:$versions.jetbrains_annotations"
+    implementation libs.androidx.multidex
 
-    implementation "androidx.multidex:multidex:$versions.android_multidex"
+    implementation libs.androidx.appcompat
 
-    implementation "androidx.appcompat:appcompat:$versions.android_appcompat"
-
-    implementation "androidx.documentfile:documentfile:$versions.android_documentfile"
-    implementation "androidx.localbroadcastmanager:localbroadcastmanager:$versions.android_localbroadcastmanager"
+    implementation libs.androidx.documentfile
+    implementation libs.androidx.localbroadcastmanager
+    implementation libs.androidx.work.runtime.ktx
 
     // UI
-    implementation "androidx.cardview:cardview:$versions.android_cardview"
-    implementation "androidx.recyclerview:recyclerview:$versions.android_recyclerview"
-    implementation "androidx.viewpager:viewpager:$versions.android_viewpager"
-    implementation "androidx.constraintlayout:constraintlayout:$versions.android_constraint_layout"
-    implementation "androidx.preference:preference-ktx:$versions.android_preference"
-    implementation "com.google.android.material:material:$versions.android_material"
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:$versions.android_swiperefreshlayout"
+    implementation libs.androidx.cardview
+    implementation libs.androidx.recyclerview
+    implementation libs.androidx.viewpager
+    implementation libs.androidx.constraintlayout
+    implementation libs.androidx.preference.ktx
+    implementation libs.androidx.swiperefreshlayout
+
+    implementation libs.material
 
     // Room
-    implementation "androidx.room:room-runtime:$versions.android_room"
-    testImplementation "androidx.room:room-testing:$versions.android_room"
-    kapt "androidx.room:room-compiler:$versions.android_room"
-    implementation("androidx.room:room-ktx:$versions.android_room")
+    implementation libs.androidx.room.runtime
+    testImplementation libs.androidx.room.testing
+    kapt libs.androidx.room.compiler
+    implementation(libs.androidx.room.ktx)
 
     // Lifecycle
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$versions.android_lifecycle"
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$versions.android_lifecycle")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$versions.android_lifecycle")
-
-    implementation("androidx.annotation:annotation:$versions.android_annotation")
-
-    implementation "androidx.work:work-runtime-ktx:$versions.android_workmanager"
-
-    testImplementation "junit:junit:$versions.junit"
+    implementation libs.androidx.lifecycle.viewmodel.ktx
+    implementation(libs.androidx.lifecycle.livedata.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
 
     // AndroidX Test
-    androidTestImplementation "androidx.test.espresso:espresso-core:$versions.android_test_espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-contrib:$versions.android_test_espresso"
-    androidTestImplementation "androidx.test.espresso:espresso-intents:$versions.android_test_espresso"
-    androidTestImplementation "androidx.test:runner:$versions.android_test_runner"
-    androidTestImplementation "androidx.test:rules:$versions.android_test_rules"
-    androidTestImplementation "androidx.test.ext:junit:$versions.android_test_ext_junit"
+    androidTestImplementation libs.androidx.test.espresso.core
+    androidTestImplementation libs.androidx.test.espresso.contrib
+    androidTestImplementation libs.androidx.test.espresso.intents
+    androidTestImplementation libs.androidx.test.runner
+    androidTestImplementation libs.androidx.test.rules
+    androidTestImplementation libs.androidx.test.ext.junit
+    androidTestImplementation libs.androidx.test.uiautomator
 
-    // For ANDROIDX_TEST_ORCHESTRATOR
-    // androidTestUtil "androidx.test:orchestrator:$android_test_version"
+    testImplementation libs.junit
+    androidTestImplementation libs.loremipsum
 
-    androidTestImplementation "androidx.test.uiautomator:uiautomator:$versions.android_test_uiautomator"
+    implementation libs.dagger
+    kapt libs.dagger.compiler
 
-    androidTestImplementation "de.sven-jacobs:loremipsum:$versions.loremipsum"
+    implementation orgJavaLocation()
 
-    // Dagger
-    implementation "com.google.dagger:dagger:$versions.dagger"
-    kapt "com.google.dagger:dagger-compiler:$versions.dagger"
+    implementation libs.gson
 
-    implementation "com.google.code.gson:gson:$versions.gson"
+    implementation libs.dropbox.core.sdk
 
-    implementation "com.dropbox.core:dropbox-core-sdk:$versions.dropbox_core_sdk"
+    implementation libs.juniversalchardet
 
-    implementation "com.googlecode.juniversalchardet:juniversalchardet:$versions.juniversalchardet"
+    implementation libs.joda.time
 
-    implementation "joda-time:joda-time:$versions.joda_time"
+    implementation libs.glide
 
-    implementation "com.github.bumptech.glide:glide:$versions.glide"
-
-    implementation("com.github.thegrizzlylabs:sardine-android:$versions.sardine") {
+    implementation(libs.sardine) {
         exclude group: 'xpp3', module: 'xpp3'
     }
 
     constraints {
-        implementation('com.squareup.okhttp3:okhttp:4.10.0-RC1') {
+        implementation(libs.okhttp) {
             because 'https://github.com/orgzly/orgzly-android/issues/880'
         }
     }
 
-    implementation "io.github.rburgst:okhttp-digest:$versions.okhttp_digest"
+    implementation libs.okhttp.digest
 
-    implementation "org.eclipse.jgit:org.eclipse.jgit:$versions.jgit"
-    implementation "org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:$versions.jgit"
+    implementation libs.jgit
+    implementation libs.jgit.ssh.jsch
 }
 
 repositories {
@@ -208,7 +200,7 @@ def orgJavaLocation() {
         logger.info("app: Using org-java from ${gradle.ext.orgJavaDir}")
         return project(':org-java')
     } else {
-        logger.info("app: Using com.orgzly:org-java:$versions.org_java from Maven repository")
-        return "com.orgzly:org-java:$versions.org_java"
+        logger.info("app: Using ${libs.orgzly.org.java} from Maven repository")
+        return libs.orgzly.org.java
     }
 }
