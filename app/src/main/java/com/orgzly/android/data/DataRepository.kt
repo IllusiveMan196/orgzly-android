@@ -2263,7 +2263,7 @@ class DataRepository @Inject constructor(
                     name,
                     BookFormat.ORG,
                     resources,
-                    GETTING_STARTED_NOTEBOOK_RESOURCE_ID)
+                    R.raw.orgzly_getting_started)
 
             if (book != null) {
                 setBookLastActionAndSyncStatus(book.book.id, BookAction.forNow(
@@ -2342,7 +2342,5 @@ class DataRepository @Inject constructor(
 
     companion object {
         private val TAG = DataRepository::class.java.name
-
-        const val GETTING_STARTED_NOTEBOOK_RESOURCE_ID = R.raw.orgzly_getting_started
     }
 }

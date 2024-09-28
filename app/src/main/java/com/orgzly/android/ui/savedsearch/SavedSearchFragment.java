@@ -126,10 +126,9 @@ public class SavedSearchFragment extends CommonFragment implements DrawerItem {
         binding.topToolbar.setNavigationOnClickListener(v -> close());
 
         binding.topToolbar.setOnMenuItemClickListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.done:
-                    save();
-                    return true;
+            if (item.getItemId() == R.id.done) {
+                save();
+                return true;
             }
 
             return false;
