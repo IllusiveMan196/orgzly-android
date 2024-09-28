@@ -18,7 +18,7 @@ object SelectionBackground {
 
     @ColorInt
     private fun backgroundColor(view: View, alpha: Int? = null): Int  {
-        var color = view.context.styledAttributes(intArrayOf(com.google.android.material.R.attr.colorSecondaryContainer)) { typedArray ->
+        var color = view.context.styledAttributes(intArrayOf(com.google.android.material.R.attr.colorPrimaryInverse)) { typedArray ->
             typedArray.getColor(0, 0)
         }
 
