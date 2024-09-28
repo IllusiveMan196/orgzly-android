@@ -23,9 +23,9 @@ object WidgetStyle {
     @JvmStatic
     fun updateActivity(activity: AppCompatActivity) {
         when (AppPreferences.widgetColorScheme(activity)) {
-            "light" -> activity.setTheme(R.style.Theme_Material3_Light_Dialog_Alert)
-            "dark", "black" -> activity.setTheme(R.style.Theme_Material3_Dark_Dialog_Alert)
-            else -> activity.setTheme(R.style.Theme_Material3_DayNight_Dialog_Alert)
+            "light" -> activity.setTheme(com.google.android.material.R.style.Theme_Material3_Light_Dialog_Alert)
+            "dark", "black" -> activity.setTheme(com.google.android.material.R.style.Theme_Material3_Dark_Dialog_Alert)
+            else -> activity.setTheme(com.google.android.material.R.style.Theme_Material3_DayNight_Dialog_Alert)
         }
 
         activity.supportRequestWindowFeature(Window.FEATURE_NO_TITLE)

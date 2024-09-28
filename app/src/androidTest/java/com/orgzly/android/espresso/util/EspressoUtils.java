@@ -118,7 +118,7 @@ public class EspressoUtils {
     }
 
     public static ViewInteraction onItemInDrawer(int position, @IdRes int childView) {
-        return onRecyclerViewItem(R.id.design_navigation_view, position, childView);
+        return onRecyclerViewItem(com.google.android.material.R.id.design_navigation_view, position, childView);
     }
 
     public static ViewInteraction onBook(int position) {
@@ -323,13 +323,13 @@ public class EspressoUtils {
 
     public static ViewInteraction contextualToolbarOverflowMenu() {
         return onView(anyOf(
-                withContentDescription(R.string.abc_action_menu_overflow_description),
+                withContentDescription(androidx.appcompat.R.string.abc_action_menu_overflow_description),
                 withClassName(endsWith("OverflowMenuButton"))));
     }
 
     public static void searchForText(String str) {
         onView(allOf(withId(R.id.search_view), isDisplayed())).perform(click());
-        onView(withId(R.id.search_src_text)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
+        onView(withId(androidx.appcompat.R.id.search_src_text)).perform(replaceText(str), pressKey(KeyEvent.KEYCODE_ENTER));
     }
 
     public static ViewAction[] replaceTextCloseKeyboard(String str) {
