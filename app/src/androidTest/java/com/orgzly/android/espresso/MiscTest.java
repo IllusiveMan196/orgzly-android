@@ -40,6 +40,7 @@ import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
 import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TimePicker;
@@ -276,7 +277,8 @@ public class MiscTest extends OrgzlyTest {
         onNoteInBook(1).perform(click());
 
         Calendar cal = new GregorianCalendar(2015, 0, 18, 4, 5);
-        String s = DateFormat.getTimeFormat(context).format(cal.getTime());
+        String s = DateUtils.formatDateRange(
+                context, cal.getTimeInMillis(), cal.getTimeInMillis(), DateUtils.FORMAT_SHOW_TIME);
 
         onView(withId(R.id.scheduled_button)).perform(click());
         onView(withId(R.id.time_picker_button)).check(matches(withText(containsString(s))));
