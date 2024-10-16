@@ -1,15 +1,20 @@
 package com.orgzly.android.sync
 
 import android.app.Application
+import android.content.Context
 import com.orgzly.BuildConfig
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.util.LogUtils
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class AutoSync @Inject constructor(val context: Application, val dataRepository: DataRepository) {
+class AutoSync @Inject constructor(
+    @ApplicationContext val context: Context,
+    val dataRepository: DataRepository
+) {
 
     fun trigger(type: Type) {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, type)
@@ -37,7 +42,7 @@ class AutoSync @Inject constructor(val context: Application, val dataRepository:
     private fun startSync() {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)
 
-        SyncRunner.startAuto()
+        SyncRunner.startAuto(context)
     }
 
     enum class Type {

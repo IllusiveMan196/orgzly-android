@@ -7,6 +7,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.orgzly.android.App;
+import com.orgzly.android.App;
 import com.orgzly.android.util.MiscUtils;
 
 import org.eclipse.jgit.api.Git;

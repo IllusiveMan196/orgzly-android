@@ -29,7 +29,7 @@ data class NotesClipboard(val entries: List<Entry> = emptyList()) {
 
             MiscUtils.writeStringToFile(content, dataFile())
 
-            AppPreferences.notesClipboard(App.getAppContext(), "$count")
+            AppPreferences.notesClipboard(App.appContext, "$count")
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -38,7 +38,7 @@ data class NotesClipboard(val entries: List<Entry> = emptyList()) {
 
     companion object {
         fun count(): Int {
-            return AppPreferences.notesClipboard(App.getAppContext())?.toInt() ?: 0
+            return AppPreferences.notesClipboard(App.appContext)?.toInt() ?: 0
         }
 
         fun create(dataRepository: DataRepository, ids: Set<Long>): NotesClipboard {
@@ -67,13 +67,13 @@ data class NotesClipboard(val entries: List<Entry> = emptyList()) {
 
         @JvmStatic
         fun clear() {
-            AppPreferences.notesClipboard(App.getAppContext(), null)
+            AppPreferences.notesClipboard(App.appContext, null)
 
             dataFile().delete()
         }
 
         private fun dataFile(): File {
-            return File(App.getAppContext().filesDir, "clipboard.json")
+            return File(App.appContext.filesDir, "clipboard.json")
         }
     }
 }

@@ -19,7 +19,9 @@ import org.junit.Test;
 import java.io.IOException;
 import java.util.Map;
 
-// FIXME: Clean this up - split it up.
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class DataRepositoryTest extends OrgzlyTest {
     private static final String TAG = DataRepositoryTest.class.getName();
 

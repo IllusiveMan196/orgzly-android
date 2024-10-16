@@ -1,5 +1,8 @@
 package com.orgzly.android.repos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import android.os.Environment;
 
 import com.orgzly.android.BookName;
@@ -18,9 +21,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
+@HiltAndroidTest
 public class DirectoryRepoTest extends OrgzlyTest {
     private static final String TAG = DirectoryRepoTest.class.getName();
 

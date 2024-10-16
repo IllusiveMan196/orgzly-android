@@ -23,8 +23,10 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoDirectoryBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class DirectoryRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoDirectoryBinding
 
@@ -34,8 +36,6 @@ class DirectoryRepoActivity : CommonActivity() {
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityRepoDirectoryBinding.inflate(layoutInflater)

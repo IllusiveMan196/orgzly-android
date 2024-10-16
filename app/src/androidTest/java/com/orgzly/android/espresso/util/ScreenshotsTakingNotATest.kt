@@ -1,11 +1,20 @@
 package com.orgzly.android.espresso.util
 
+/*
+ * 1) Copy notebooks to the emulator:
+ * adb -e push miscellaneous.org README.org android/changelog.org /data/data/com.orgzly/cache/
+ * adb -e push android/getting-started.org /data/data/com.orgzly/cache/Getting\ Started.org
+ *
+ * 2) Set a breakpoint in takeScreenshot()
+ *
+ * 3) Take the screenshots from emulator's UI, with "Show Device Frame"
+ */
+
 import android.os.SystemClock
 import androidx.appcompat.app.AppCompatActivity
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.Espresso.pressBack
-import androidx.test.espresso.action.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.contrib.DrawerActions.open
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -18,6 +27,7 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.android.ui.settings.SettingsActivity
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
 import org.junit.Before
 import org.junit.BeforeClass
@@ -25,18 +35,8 @@ import org.junit.Ignore
 import org.junit.Test
 import java.io.File
 
-
-/*
- * 1) Copy notebooks to the emulator:
- * adb -e push miscellaneous.org README.org android/changelog.org /data/data/com.orgzly/cache/
- * adb -e push android/getting-started.org /data/data/com.orgzly/cache/Getting\ Started.org
- *
- * 2) Set a breakpoint in takeScreenshot()
- *
- * 3) Take the screenshots from emulator's UI, with "Show Device Frame"
- */
-
 @Ignore("Not a test")
+@HiltAndroidTest
 class ScreenshotsTakingNotATest : OrgzlyTest() {
     private lateinit var scenario: ActivityScenario<out AppCompatActivity>
 

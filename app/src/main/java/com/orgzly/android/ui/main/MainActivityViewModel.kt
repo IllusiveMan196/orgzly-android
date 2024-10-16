@@ -18,8 +18,9 @@ import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
 import java.io.File
+import javax.inject.Inject
 
-class MainActivityViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
+class MainActivityViewModel @Inject constructor(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
     private val booksSubject: LiveData<List<BookView>> = booksParams.switchMap {
@@ -76,13 +77,13 @@ class MainActivityViewModel(private val dataRepository: DataRepository) : Common
                 val result = UseCaseRunner.run(useCase)
 
                 if (result.userData == null) {
-                    val msg = App.getAppContext().getString(R.string.no_such_link_target, name, value)
+                    val msg = App.appContext.getString(R.string.no_such_link_target, name, value)
                     errorEvent.postValue(Throwable(msg))
 
                 } else {
                     val noteIdBookId = result.userData as NoteDao.NoteIdBookId
 
-                    when (AppPreferences.linkTarget(App.getAppContext())) {
+                    when (AppPreferences.linkTarget(App.appContext)) {
                         "note_details" ->
                             navigationActions.postValue(
                                 MainNavigationAction.OpenNote(noteIdBookId.bookId, noteIdBookId.noteId))

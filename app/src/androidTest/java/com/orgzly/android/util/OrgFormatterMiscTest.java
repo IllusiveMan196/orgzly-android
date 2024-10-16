@@ -8,6 +8,9 @@ import com.orgzly.android.ui.views.style.UrlLinkSpan;
 
 import org.junit.Test;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class OrgFormatterMiscTest extends OrgFormatterTest {
     @Test
     public void testLinksMultiLine() {

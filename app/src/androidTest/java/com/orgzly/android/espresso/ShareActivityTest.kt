@@ -14,11 +14,12 @@ import com.orgzly.android.AppIntent
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.share.ShareActivity
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.startsWith
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
-
+@HiltAndroidTest
 class ShareActivityTest : OrgzlyTest() {
     private fun startActivityWithIntent(
             action: String? = null,

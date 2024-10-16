@@ -3,10 +3,12 @@ package com.orgzly.android.reminders
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.db.dao.ReminderTimeDao
 import com.orgzly.android.reminders.NoteReminders.getNoteReminders
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.joda.time.Instant
 import org.junit.Assert
 import org.junit.Test
 
+@HiltAndroidTest
 class NoteRemindersTest : OrgzlyTest() {
     @Test
     fun testNotesWithTimesSkipDoneState() {

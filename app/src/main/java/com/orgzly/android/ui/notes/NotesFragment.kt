@@ -21,6 +21,7 @@ import com.orgzly.android.ui.dialogs.TimestampDialogFragment
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.util.LogUtils
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
@@ -28,6 +29,7 @@ import javax.inject.Inject
  * Fragment which is displaying a list of notes,
  * such as BookFragment, SearchFragment or AgendaFragment.
  */
+@AndroidEntryPoint
 abstract class NotesFragment : CommonFragment(), TimestampDialogFragment.OnDateTimeSetListener {
 
     @Inject
@@ -88,13 +90,6 @@ abstract class NotesFragment : CommonFragment(), TimestampDialogFragment.OnDateT
 
     @JvmField
     var dialog: AlertDialog? = null
-
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        App.appComponent.inject(this)
-    }
 
     override fun onPause() {
         super.onPause()

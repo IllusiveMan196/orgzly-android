@@ -20,11 +20,13 @@ import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityBrowserBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
 import java.io.FilenameFilter
 import java.util.*
 
 // TODO: Rewrite or remove
+@AndroidEntryPoint
 class BrowserActivity :
         CommonActivity(),
         AdapterView.OnItemClickListener {
@@ -41,8 +43,6 @@ class BrowserActivity :
     private var isFileSelectable: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityBrowserBinding.inflate(layoutInflater)

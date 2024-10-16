@@ -1,13 +1,5 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -23,6 +15,16 @@ import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKey
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Test;
+
+import dagger.hilt.android.testing.HiltAndroidTest;
+@HiltAndroidTest
 public class NewNoteTest extends OrgzlyTest {
     @Test
     public void testNewNoteInEmptyNotebook() {

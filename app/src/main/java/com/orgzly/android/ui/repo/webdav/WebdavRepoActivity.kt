@@ -9,7 +9,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.repos.WebdavRepo.Companion.CERTIFICATES_PREF_KEY
@@ -21,8 +20,10 @@ import com.orgzly.android.ui.util.KeyboardUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoWebdavBinding
 import com.orgzly.databinding.DialogCertificatesBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class WebdavRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoWebdavBinding
 
@@ -32,8 +33,6 @@ class WebdavRepoActivity : CommonActivity() {
     private lateinit var viewModel: WebdavRepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityRepoWebdavBinding.inflate(layoutInflater)

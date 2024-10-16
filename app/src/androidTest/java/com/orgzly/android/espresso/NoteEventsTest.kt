@@ -11,11 +11,12 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.hamcrest.Matchers.startsWith
 import org.junit.Test
 
-
+@HiltAndroidTest
 class NoteEventsTest : OrgzlyTest() {
     private val now: String
             get() = OrgDateTime(true).toString()

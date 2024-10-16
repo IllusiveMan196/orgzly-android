@@ -7,6 +7,8 @@ import com.orgzly.android.ui.views.style.UrlLinkSpan;
 
 import java.util.Arrays;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
 public class OrgFormatterTest extends OrgzlyTest {
 
     protected class SpanItem {

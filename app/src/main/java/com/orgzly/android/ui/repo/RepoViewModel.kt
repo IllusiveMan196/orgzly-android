@@ -3,8 +3,8 @@ package com.orgzly.android.ui.repo
 import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Repo
-import com.orgzly.android.repos.RepoWithProps
 import com.orgzly.android.repos.RepoType
+import com.orgzly.android.repos.RepoWithProps
 import com.orgzly.android.repos.SyncRepo
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent

@@ -39,7 +39,6 @@ import static org.junit.Assert.assertTrue;
 import android.app.Activity;
 import android.content.pm.ActivityInfo;
 import android.os.SystemClock;
-import android.text.format.DateFormat;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.DatePicker;
@@ -62,6 +61,9 @@ import org.junit.Test;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class MiscTest extends OrgzlyTest {
     @Test
     public void testLftRgt() {

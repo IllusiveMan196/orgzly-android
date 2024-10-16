@@ -24,6 +24,9 @@ import org.junit.experimental.categories.Category;
 
 import java.io.File;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class ReposActivityTest extends OrgzlyTest {
     @Test
     public void testSavingWithBogusDirectoryUri() {

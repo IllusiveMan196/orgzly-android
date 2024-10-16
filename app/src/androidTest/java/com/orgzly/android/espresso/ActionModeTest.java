@@ -26,6 +26,9 @@ import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInSearch;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class ActionModeTest extends OrgzlyTest {
     private ActivityScenario<MainActivity> scenario;
 

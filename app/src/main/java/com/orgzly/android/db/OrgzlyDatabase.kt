@@ -3,6 +3,7 @@ package com.orgzly.android.db
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import android.util.Log
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -76,36 +77,37 @@ abstract class OrgzlyDatabase : RoomDatabase() {
 
         @JvmStatic
         fun forMemory(context: Context): OrgzlyDatabase {
-            return Room.inMemoryDatabaseBuilder(context.applicationContext, OrgzlyDatabase::class.java)
+            return Room.inMemoryDatabaseBuilder(context, OrgzlyDatabase::class.java)
                     .allowMainThreadQueries()
                     .build()
         }
 
         @JvmStatic
         fun forFile(context: Context, fileName: String): OrgzlyDatabase {
-            return Room.databaseBuilder(
-                    context.applicationContext, OrgzlyDatabase::class.java, fileName)
+            val preRoomMigration = PreRoomMigration(context)
+
+            return Room.databaseBuilder(context, OrgzlyDatabase::class.java, fileName)
                     .allowMainThreadQueries() // TODO: Remove
                     .addMigrations(
-                            PreRoomMigration.MIGRATION_130_131,
-                            PreRoomMigration.MIGRATION_131_132,
-                            PreRoomMigration.MIGRATION_132_133,
-                            PreRoomMigration.MIGRATION_133_134,
-                            PreRoomMigration.MIGRATION_134_135,
-                            PreRoomMigration.MIGRATION_135_136,
-                            PreRoomMigration.MIGRATION_136_137,
-                            PreRoomMigration.MIGRATION_137_138, // v1.4.13
-                            PreRoomMigration.MIGRATION_138_139, // v1.5
-                            PreRoomMigration.MIGRATION_139_140,
-                            PreRoomMigration.MIGRATION_140_141,
-                            PreRoomMigration.MIGRATION_141_142,
-                            PreRoomMigration.MIGRATION_142_143,
-                            PreRoomMigration.MIGRATION_143_144,
-                            PreRoomMigration.MIGRATION_144_145,
-                            PreRoomMigration.MIGRATION_145_146,
-                            PreRoomMigration.MIGRATION_146_147,
-                            PreRoomMigration.MIGRATION_147_148,
-                            PreRoomMigration.MIGRATION_148_149,
+                            preRoomMigration.MIGRATION_130_131,
+                            preRoomMigration.MIGRATION_131_132,
+                            preRoomMigration.MIGRATION_132_133,
+                            preRoomMigration.MIGRATION_133_134,
+                            preRoomMigration.MIGRATION_134_135,
+                            preRoomMigration.MIGRATION_135_136,
+                            preRoomMigration.MIGRATION_136_137,
+                            preRoomMigration.MIGRATION_137_138, // v1.4.13
+                            preRoomMigration.MIGRATION_138_139, // v1.5
+                            preRoomMigration.MIGRATION_139_140,
+                            preRoomMigration.MIGRATION_140_141,
+                            preRoomMigration.MIGRATION_141_142,
+                            preRoomMigration.MIGRATION_142_143,
+                            preRoomMigration.MIGRATION_143_144,
+                            preRoomMigration.MIGRATION_144_145,
+                            preRoomMigration.MIGRATION_145_146,
+                            preRoomMigration.MIGRATION_146_147,
+                            preRoomMigration.MIGRATION_147_148,
+                            preRoomMigration.MIGRATION_148_149,
 
                             MIGRATION_149_150, // Switch to Room
                             MIGRATION_150_151,

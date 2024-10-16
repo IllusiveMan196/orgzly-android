@@ -49,6 +49,9 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class BooksTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {

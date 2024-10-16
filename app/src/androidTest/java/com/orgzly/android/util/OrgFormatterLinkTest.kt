@@ -4,6 +4,7 @@ import com.orgzly.android.ui.views.style.FileLinkSpan
 import com.orgzly.android.ui.views.style.FileOrNotLinkSpan
 import com.orgzly.android.ui.views.style.IdLinkSpan
 import com.orgzly.android.ui.views.style.UrlLinkSpan
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.After
@@ -14,6 +15,7 @@ import org.junit.runners.Parameterized
 import java.io.File
 import java.io.IOException
 
+@HiltAndroidTest
 @RunWith(value = Parameterized::class)
 class OrgFormatterLinkTest(private val param: Parameter) : OrgFormatterTest() {
 

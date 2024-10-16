@@ -28,6 +28,9 @@ import com.orgzly.android.ui.main.MainActivity;
 import org.junit.Before;
 import org.junit.Test;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class SettingsFragmentTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {

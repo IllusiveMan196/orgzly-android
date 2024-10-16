@@ -5,7 +5,6 @@ import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.BookFormat
 import com.orgzly.android.BookName
-import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.BookAction
 import com.orgzly.android.db.entity.Repo
@@ -56,7 +55,7 @@ object SyncUtils {
 
         /* Group local and remote books by name. */
         val namesakes = BookNamesake.getAll(
-            App.getAppContext(), localBooks, versionedRooks)
+            App.appContext, localBooks, versionedRooks)
 
         /* If there is no local book, create empty "dummy" one. */
         for (namesake in namesakes.values) {
@@ -146,7 +145,7 @@ object SyncUtils {
             BookSyncStatus.BOOK_WITH_LINK_LOCAL_MODIFIED -> {
                 repoEntity = namesake.book.linkRepo
                 repoUrl = repoEntity!!.url
-                fileName = BookName.getFileName(App.getAppContext(), namesake.book.syncedTo!!.uri)
+                fileName = BookName.getFileName(App.appContext, namesake.book.syncedTo!!.uri)
                 dataRepository.saveBookToRepo(repoEntity, fileName, namesake.book, BookFormat.ORG)
                 bookAction = BookAction.forNow(BookAction.Type.INFO, namesake.status.msg(repoUrl))
             }
@@ -173,14 +172,14 @@ object SyncUtils {
         var onMainBranch = true
         val dbFile = dataRepository.getTempBookFile()
         try {
-            NotesOrgExporter(dataRepository).exportBook(book, dbFile)
+            dataRepository.exportBook(book, dbFile)
             val (newRook1, onMainBranch1, loadFile) =
                 repo.syncBook(someRook.uri, currentRook, dbFile)
             onMainBranch = onMainBranch1
             // We only need to write it if syncback is needed
             if (loadFile != null) {
                 newRook = newRook1
-                val fileName = BookName.getFileName(App.getAppContext(), newRook.uri)
+                val fileName = BookName.getFileName(App.appContext, newRook.uri)
                 val bookName = BookName.fromFileName(fileName)
                 Log.i("Git", String.format("Loading from file %s", loadFile.toString()))
                 val loadedBook = dataRepository.loadBookFromFile(

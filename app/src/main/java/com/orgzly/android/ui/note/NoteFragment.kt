@@ -45,12 +45,14 @@ import com.orgzly.databinding.FragmentNoteBinding
 import com.orgzly.org.OrgProperties
 import com.orgzly.org.datetime.OrgDateTime
 import com.orgzly.org.datetime.OrgRange
+import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import javax.inject.Inject
 
 /**
  * Note editor.
  */
+@AndroidEntryPoint
 class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFragment.OnDateTimeSetListener, DrawerItem {
 
     private lateinit var binding: FragmentNoteBinding
@@ -76,8 +78,6 @@ class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFrag
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        App.appComponent.inject(this)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 
@@ -121,7 +121,6 @@ class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFrag
             .get(SharedMainActivityViewModel::class.java)
 
         val factory = NoteViewModelFactory.getInstance(dataRepository, noteInitialData)
-
         viewModel = ViewModelProvider(this, factory).get(NoteViewModel::class.java)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, userCancelBackPressHandler)
@@ -338,7 +337,7 @@ class NoteFragment : CommonFragment(), View.OnClickListener, TimestampDialogFrag
             }
 
             R.id.sync -> {
-                SyncRunner.startSync()
+                SyncRunner.startSync(requireContext())
             }
 
             R.id.activity_action_settings -> {

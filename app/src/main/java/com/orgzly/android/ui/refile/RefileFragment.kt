@@ -24,8 +24,10 @@ import com.orgzly.android.ui.util.invisibleIf
 import com.orgzly.android.usecase.NoteRefile
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.DialogRefileBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class RefileFragment : DialogFragment() {
 
     private lateinit var binding: DialogRefileBinding
@@ -34,12 +36,6 @@ class RefileFragment : DialogFragment() {
     lateinit var dataRepository: DataRepository
 
     lateinit var viewModel: RefileViewModel
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        App.appComponent.inject(this)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

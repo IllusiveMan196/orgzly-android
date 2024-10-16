@@ -39,6 +39,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -158,6 +159,8 @@ dependencies {
 
     implementation(libs.androidx.appcompat)
 
+    implementation(libs.androidx.fragment.ktx)
+
     implementation(libs.androidx.documentfile)
     implementation(libs.androidx.localbroadcastmanager)
     implementation(libs.androidx.work.runtime.ktx)
@@ -195,8 +198,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.loremipsum)
 
-    implementation(libs.dagger)
-    ksp(libs.dagger.compiler)
+    implementation(libs.dagger.hilt.android)
+    ksp(libs.dagger.hilt.compiler)
+    implementation(libs.androidx.hilt.work)
+    ksp(libs.androidx.hilt.compiler)
+    androidTestImplementation(libs.dagger.hilt.android.testing)
+    kspAndroidTest(libs.dagger.hilt.android.compiler)
 
     implementation(libs.orgzly.org.java)
 

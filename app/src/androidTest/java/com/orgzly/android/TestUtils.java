@@ -27,8 +27,8 @@ import java.util.Map;
  * Creating and checking books, rooks, encodings etc.
  */
 public class TestUtils {
-    private DataRepository dataRepository;
-    private DbRepoBookRepository dbRepoBookRepository;
+    private final DataRepository dataRepository;
+    private final DbRepoBookRepository dbRepoBookRepository;
 
     TestUtils(DataRepository dataRepository, DbRepoBookRepository dbRepoBookRepository) {
         this.dataRepository = dataRepository;

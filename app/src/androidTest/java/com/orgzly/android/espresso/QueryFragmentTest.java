@@ -49,6 +49,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class QueryFragmentTest extends OrgzlyTest {
     private void defaultSetUp() {
         testUtils.setupBook("book-one",

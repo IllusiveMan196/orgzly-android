@@ -32,9 +32,12 @@ import java.util.Collections;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * The AppWidgetProvider for the list widget
  */
+@AndroidEntryPoint
 public class ListWidgetProvider extends AppWidgetProvider {
     private static final String TAG = ListWidgetProvider.class.getName();
 
@@ -290,8 +293,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        App.appComponent.inject(this);
-
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {

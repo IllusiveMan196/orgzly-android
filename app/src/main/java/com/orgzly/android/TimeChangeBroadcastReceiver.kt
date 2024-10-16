@@ -8,16 +8,16 @@ import com.orgzly.android.data.DataRepository
 import com.orgzly.android.usecase.TimestampUpdate
 import com.orgzly.android.usecase.UseCaseWorker
 import com.orgzly.android.util.LogUtils
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class TimeChangeBroadcastReceiver : BroadcastReceiver() {
 
     @Inject
     internal lateinit var dataRepository: DataRepository
 
     override fun onReceive(context: Context, intent: Intent) {
-        App.appComponent.inject(this)
-
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 
         when (intent.action) {

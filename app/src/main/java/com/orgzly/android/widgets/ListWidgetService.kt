@@ -22,18 +22,14 @@ import com.orgzly.android.ui.util.TitleGenerator
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.UserTimeFormatter
 import com.orgzly.org.datetime.OrgRange
+import dagger.hilt.android.AndroidEntryPoint
 import org.joda.time.DateTime
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class ListWidgetService : RemoteViewsService() {
     @Inject
     lateinit var dataRepository: DataRepository
-
-    override fun onCreate() {
-        App.appComponent.inject(this)
-
-        super.onCreate()
-    }
 
     override fun onGetViewFactory(intent: Intent): RemoteViewsFactory {
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG)

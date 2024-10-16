@@ -16,9 +16,14 @@ import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.*
 import com.orgzly.android.util.LogUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+@HiltViewModel
+class BooksViewModel @Inject constructor(
+    private val dataRepository: DataRepository
+) : CommonViewModel() {
 
-class BooksViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
     private val booksParams = MutableLiveData<String>()
 
     // Book being operated on (deleted, renamed, etc.)
@@ -164,7 +169,7 @@ class BooksViewModel(private val dataRepository: DataRepository) : CommonViewMod
 
         App.EXECUTORS.diskIO().execute {
             catchAndPostError {
-                App.getAppContext().contentResolver.openOutputStream(uri).let { stream ->
+                App.appContext.contentResolver.openOutputStream(uri).let { stream ->
                     if (stream != null) {
                         UseCaseRunner.run(BookExportToUri(book.id, stream, format))
                         bookExportedEvent.postValue(uri.toString())

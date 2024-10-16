@@ -1,10 +1,13 @@
 package com.orgzly.android.misc;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
+import static org.junit.Assume.assumeTrue;
+
 import android.util.Log;
 
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.LipsumBookGenerator;
-import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.util.MiscUtils;
@@ -15,10 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
+@HiltAndroidTest
 public class BookParsingTest extends OrgzlyTest {
     private static final String TAG = BookParsingTest.class.getName();
 
@@ -377,7 +379,7 @@ public class BookParsingTest extends OrgzlyTest {
                 /* Write from db -> temp file. */
                 File file = dataRepository.getTempBookFile();
                 try {
-                    new NotesOrgExporter(dataRepository).exportBook(book, file);
+                    dataRepository.exportBook(book, file);
                     assertEquals("Notebook", expacted, MiscUtils.readStringFromFile(file));
                 } finally {
                     file.delete();

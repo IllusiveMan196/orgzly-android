@@ -1,13 +1,7 @@
 package com.orgzly.android.util
 
-import android.util.Log
-import com.orgzly.BuildConfig
 import com.orgzly.android.App
 import com.orgzly.android.prefs.AppPreferences
-import org.joda.time.DateTime
-import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
 
 class LogMajorEvents {
     companion object {
@@ -15,7 +9,7 @@ class LogMajorEvents {
         const val REMINDERS = "reminders"
 
         fun isEnabled(): Boolean {
-            return AppPreferences.logMajorEvents(App.getAppContext())
+            return AppPreferences.logMajorEvents(App.appContext)
         }
     }
 

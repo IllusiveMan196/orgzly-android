@@ -12,11 +12,12 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.onSnackbar
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
-import org.hamcrest.Matchers.*
 import org.junit.Before
 import org.junit.Test
 
+@HiltAndroidTest
 class OrgProtocolTest : OrgzlyTest() {
     @Before
     @Throws(Exception::class)

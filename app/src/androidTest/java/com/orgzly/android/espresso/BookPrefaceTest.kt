@@ -10,10 +10,12 @@ import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Test
 
+@HiltAndroidTest
 class BookPrefaceTest : OrgzlyTest() {
     @Before
     @Throws(Exception::class)

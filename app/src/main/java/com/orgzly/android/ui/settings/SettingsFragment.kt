@@ -12,6 +12,7 @@ import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.AppIntent
 import com.orgzly.android.SharingShortcutsManager
+import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.*
 import com.orgzly.android.reminders.RemindersScheduler
 import com.orgzly.android.ui.CommonActivity
@@ -24,12 +25,18 @@ import com.orgzly.android.usecase.UseCase
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 /**
  * Displays settings.
  */
+@AndroidEntryPoint
 class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
     private var listener: Listener? = null
+
+    @Inject
+    lateinit var dataRepository: DataRepository
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -308,7 +315,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SharedPreferences.OnSharedP
          */
         RemindersScheduler.notifyDataSetChanged(requireContext())
         ListWidgetProvider.notifyDataSetChanged(requireContext())
-        SharingShortcutsManager().replaceDynamicShortcuts(requireContext())
+        SharingShortcutsManager(dataRepository).replaceDynamicShortcuts(requireContext())
     }
 
     private fun updateRemindersScreen() {

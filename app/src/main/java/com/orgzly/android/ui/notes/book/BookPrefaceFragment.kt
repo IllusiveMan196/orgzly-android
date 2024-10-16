@@ -18,11 +18,13 @@ import com.orgzly.android.ui.CommonFragment
 import com.orgzly.android.ui.main.SharedMainActivityViewModel
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentBookPrefaceBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 /**
  * Book's preface and settings.
  */
+@AndroidEntryPoint
 class BookPrefaceFragment : CommonFragment() {
 
     private lateinit var binding: FragmentBookPrefaceBinding
@@ -40,8 +42,6 @@ class BookPrefaceFragment : CommonFragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        App.appComponent.inject(this)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, activity)
 

@@ -3,7 +3,6 @@ package com.orgzly.android.repos;
 import android.net.Uri;
 import android.os.SystemClock;
 
-
 import com.orgzly.android.data.DbRepoBookRepository;
 
 import java.io.File;

@@ -16,10 +16,14 @@ import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.getAlarmManager
 import com.orgzly.android.util.LogMajorEvents
+import dagger.hilt.android.qualifiers.ApplicationContext
 import org.joda.time.DateTime
 import javax.inject.Inject
 
-class RemindersScheduler @Inject constructor(val context: Application, val logs: AppLogsRepository) {
+class RemindersScheduler @Inject constructor(
+    @ApplicationContext val context: Context,
+    val logs: AppLogsRepository
+) {
 
     companion object {
         fun notifyDataSetChanged(context: Context) {

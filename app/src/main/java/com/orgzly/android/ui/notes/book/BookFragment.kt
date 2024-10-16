@@ -756,7 +756,7 @@ class BookFragment :
             }
 
             R.id.sync -> {
-                SyncRunner.startSync()
+                SyncRunner.startSync(requireContext())
             }
 
             R.id.activity_action_settings -> {

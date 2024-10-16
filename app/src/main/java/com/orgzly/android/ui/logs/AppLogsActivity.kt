@@ -2,13 +2,11 @@ package com.orgzly.android.ui.logs
 
 import android.os.Bundle
 import android.os.SystemClock
+import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.orgzly.R
-import com.orgzly.android.App
-import com.orgzly.android.data.logs.AppLogsRepository
 import com.orgzly.android.reminders.LastRun
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.util.copyPlainTextToClipboard
@@ -16,21 +14,17 @@ import com.orgzly.android.ui.util.getAlarmManager
 import com.orgzly.android.ui.util.sharePlainText
 import com.orgzly.android.ui.util.userFriendlyPeriod
 import com.orgzly.databinding.ActivityLogsBinding
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
-import javax.inject.Inject
 
+@AndroidEntryPoint
 class AppLogsActivity : CommonActivity() {
     private lateinit var binding: ActivityLogsBinding
 
-    private lateinit var viewModel: AppLogsViewModel
-
-    @Inject
-    lateinit var appLogs: AppLogsRepository
+    private val viewModel: AppLogsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityLogsBinding.inflate(layoutInflater)
@@ -39,10 +33,6 @@ class AppLogsActivity : CommonActivity() {
 
         binding.info.setTextIsSelectable(true)
         binding.logs.setTextIsSelectable(true)
-
-
-        val factory = AppLogsViewModelFactory.getInstance(appLogs)
-        viewModel = ViewModelProvider(this, factory)[AppLogsViewModel::class.java]
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {

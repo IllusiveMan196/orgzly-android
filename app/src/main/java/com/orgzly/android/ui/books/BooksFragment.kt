@@ -17,16 +17,15 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.BookFormat
 import com.orgzly.android.BookName
-import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
@@ -51,12 +50,13 @@ import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.DialogBookDeleteBinding
 import com.orgzly.databinding.DialogBookRenameBinding
 import com.orgzly.databinding.FragmentBooksBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Displays all notebooks.
  * Allows creating new, deleting, renaming, setting links etc.
  */
+@AndroidEntryPoint
 class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<BookView> {
 
     private lateinit var binding: FragmentBooksBinding
@@ -69,12 +69,9 @@ class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<Bo
 
     private var withActionBar = true
 
-    @Inject
-    lateinit var dataRepository: DataRepository
-
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
-    private lateinit var viewModel: BooksViewModel
+    private val viewModel: BooksViewModel by viewModels()
 
     private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -84,8 +81,6 @@ class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<Bo
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-
-        App.appComponent.inject(this)
 
         listener = activity as Listener
 
@@ -118,9 +113,6 @@ class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<Bo
             val uri = result.getBundle("user-data")?.getParcelable<Uri>("uri")!!
             viewModel.importBook(uri, bookName)
         }
-
-        val factory = BooksViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProvider(this, factory).get(BooksViewModel::class.java)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
     }
@@ -194,7 +186,7 @@ class BooksFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<Bo
                         }
 
                         R.id.sync -> {
-                            SyncRunner.startSync()
+                            SyncRunner.startSync(context)
                         }
 
                         R.id.activity_action_settings -> {

@@ -25,6 +25,7 @@ import com.orgzly.BuildConfig;
 import com.orgzly.R;
 import com.orgzly.android.App;
 import com.orgzly.android.AppIntent;
+import com.orgzly.android.App;
 import com.orgzly.android.SharingShortcutsManager;
 import com.orgzly.android.db.NotesClipboard;
 import com.orgzly.android.db.entity.Book;
@@ -81,6 +82,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Set;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class MainActivity extends CommonActivity
         implements
         SavedSearchFragment.Listener,
@@ -112,14 +118,13 @@ public class MainActivity extends CommonActivity
 
     private SharedMainActivityViewModel sharedMainActivityViewModel;
 
-    private MainActivityViewModel viewModel;
+    @Inject
+    public MainActivityViewModel viewModel;
 
     private ActivityForResult activityForResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.appComponent.inject(this);
-
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG)
@@ -129,11 +134,6 @@ public class MainActivity extends CommonActivity
 
         sharedMainActivityViewModel = new ViewModelProvider(this)
                 .get(SharedMainActivityViewModel.class);
-
-        ViewModelProvider.Factory factory =
-                MainActivityViewModelFactory.Companion.getInstance(dataRepository);
-
-        viewModel = new ViewModelProvider(this, factory).get(MainActivityViewModel.class);
 
         broadcastManager = LocalBroadcastManager.getInstance(this);
 
@@ -159,7 +159,7 @@ public class MainActivity extends CommonActivity
             }
         };
 
-        new SharingShortcutsManager().replaceDynamicShortcuts(this);
+        new SharingShortcutsManager(dataRepository).replaceDynamicShortcuts(this);
     }
 
     @NotNull
@@ -871,26 +871,26 @@ public class MainActivity extends CommonActivity
         Intent intent = new Intent(AppIntent.ACTION_OPEN_NOTE);
         intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId);
         intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId);
-        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(App.appContext).sendBroadcast(intent);
     }
 
     public static void followLinkToFile(String path) {
         Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_FILE);
         intent.putExtra(AppIntent.EXTRA_PATH, path);
-        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(App.appContext).sendBroadcast(intent);
     }
 
     public static void followLinkToNoteWithProperty(String name, String value) {
         Intent intent = new Intent(AppIntent.ACTION_FOLLOW_LINK_TO_NOTE_WITH_PROPERTY);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_NAME, name);
         intent.putExtra(AppIntent.EXTRA_PROPERTY_VALUE, value);
-        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(App.appContext).sendBroadcast(intent);
     }
 
     public static void openQuery(String query) {
         Intent intent = new Intent(AppIntent.ACTION_OPEN_QUERY);
         intent.putExtra(AppIntent.EXTRA_QUERY_STRING, query);
-        LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent);
+        LocalBroadcastManager.getInstance(App.appContext).sendBroadcast(intent);
     }
 
     @Override

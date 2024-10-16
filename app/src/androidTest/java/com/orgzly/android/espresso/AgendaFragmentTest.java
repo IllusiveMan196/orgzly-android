@@ -37,6 +37,9 @@ import org.joda.time.DateTime;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class AgendaFragmentTest extends OrgzlyTest {
     private ActivityScenario<MainActivity> defaultSetUp() {
         testUtils.setupBook("book-one",

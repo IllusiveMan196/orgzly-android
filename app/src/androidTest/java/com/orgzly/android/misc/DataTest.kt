@@ -2,12 +2,12 @@ package com.orgzly.android.misc
 
 import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.*
-
 import org.junit.Test
-
 import java.io.IOException
 
+@HiltAndroidTest
 class DataTest : OrgzlyTest() {
     @Test
     fun testGetBookWithEmptyDatabase() {

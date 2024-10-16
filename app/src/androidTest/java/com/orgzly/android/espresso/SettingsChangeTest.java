@@ -1,14 +1,5 @@
 package com.orgzly.android.espresso;
 
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onData;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -27,6 +18,18 @@ import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.hasToString;
 import static org.hamcrest.Matchers.not;
 
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class SettingsChangeTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {

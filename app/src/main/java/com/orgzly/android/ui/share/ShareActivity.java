@@ -43,6 +43,8 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Activity started when shared to Orgzly.
  *
@@ -51,6 +53,7 @@ import javax.inject.Inject;
  * activity and the intent will stay the same. Other apps seem to have the same problem and
  * it's not a common scenario, but it should be fixed.
  */
+@AndroidEntryPoint
 public class ShareActivity extends CommonActivity
         implements
         NoteFragment.Listener,
@@ -72,8 +75,6 @@ public class ShareActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.appComponent.inject(this);
-
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);

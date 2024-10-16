@@ -7,6 +7,15 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.util.Log;
+
+import androidx.core.content.pm.PackageInfoCompat;
+import androidx.hilt.work.HiltWorkerFactory;
+import androidx.test.platform.app.InstrumentationRegistry;
+import androidx.test.rule.GrantPermissionRule;
+import androidx.work.Configuration;
+import androidx.work.WorkManager;
+import androidx.work.impl.utils.taskexecutor.WorkManagerTaskExecutor;
 
 import com.orgzly.R;
 import com.orgzly.android.data.DataRepository;
@@ -26,9 +35,9 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import androidx.core.content.pm.PackageInfoCompat;
-import androidx.test.platform.app.InstrumentationRegistry;
-import androidx.test.rule.GrantPermissionRule;
+import javax.inject.Inject;
+
+import dagger.hilt.android.testing.HiltAndroidRule;
 
 /**
  * Sets up the environment for tests, such as shelf, preferences and contexts.
@@ -36,7 +45,13 @@ import androidx.test.rule.GrantPermissionRule;
  * Inherited by all tests.
  */
 public class OrgzlyTest {
-    protected Context context;
+    @Rule(order = 0)
+    public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+
+    @Rule(order = 1)
+    public GrantPermissionRule grantPermissionRule;
+
+    protected Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
     protected TestUtils testUtils;
 
@@ -48,12 +63,14 @@ public class OrgzlyTest {
 
     protected LocalStorage localStorage;
 
+    @Inject
     protected DataRepository dataRepository;
 
-    private OrgzlyDatabase database;
+    @Inject
+    HiltWorkerFactory workerFactory;
 
-    @Rule
-    public GrantPermissionRule grantPermissionRule;
+    @Inject
+    OrgzlyDatabase database;
 
     public OrgzlyTest() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
@@ -64,18 +81,11 @@ public class OrgzlyTest {
 
     @Before
     public void setUp() throws Exception {
-        context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-
-        database = OrgzlyDatabase.forFile(context, OrgzlyDatabase.NAME_FOR_TESTS);
+        hiltRule.inject();
 
         dbRepoBookRepository = new DbRepoBookRepository(database);
 
         localStorage = new LocalStorage(context);
-
-        RepoFactory repoFactory = new RepoFactory(context, dbRepoBookRepository);
-
-        dataRepository = new DataRepository(
-                context, database, repoFactory, context.getResources(), localStorage);
 
         testUtils = new TestUtils(dataRepository, dbRepoBookRepository);
 

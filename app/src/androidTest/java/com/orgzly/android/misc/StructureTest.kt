@@ -9,6 +9,7 @@ import com.orgzly.android.ui.NotePlace
 import com.orgzly.android.ui.Place
 import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.android.usecase.*
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert
 import org.junit.Ignore
 import org.junit.Test
@@ -16,6 +17,7 @@ import java.io.IOException
 import java.lang.StringBuilder
 import java.util.*
 
+@HiltAndroidTest
 class StructureTest : OrgzlyTest() {
     @Test
     @Throws(IOException::class)

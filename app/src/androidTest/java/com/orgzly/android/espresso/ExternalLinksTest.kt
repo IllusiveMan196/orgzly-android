@@ -10,12 +10,13 @@ import com.orgzly.android.App
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.startsWith
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
-
+@HiltAndroidTest
 @RunWith(value = Parameterized::class)
 class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
 
@@ -25,7 +26,8 @@ class ExternalLinksTest(private val param: Parameter) : OrgzlyTest() {
         @JvmStatic
         @Parameterized.Parameters(name = "{index}: {0}")
         fun data(): Collection<Parameter> {
-            val cacheDir = App.getAppContext().cacheDir
+            val cacheDir = App.appContext.cacheDir
+
             val storageDir = Environment.getExternalStorageDirectory()
 //            val downloadsDir = Environment.getExternalStoragePublicDirectory(
 //                    Environment.DIRECTORY_DOWNLOADS)

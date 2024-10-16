@@ -1,5 +1,7 @@
 package com.orgzly.android.ui.sync
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.orgzly.BuildConfig
@@ -7,8 +9,8 @@ import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.sync.SyncState
 import com.orgzly.android.util.LogUtils
 
-class SyncViewModel : ViewModel() {
-    val state: LiveData<SyncState> = SyncRunner.onStateChange("sync-view-model")
+class SyncViewModel(application: Application) : AndroidViewModel(application) {
+    val state: LiveData<SyncState> = SyncRunner.onStateChange(application, "sync-view-model")
 
     fun isSyncRunning(): Boolean {
         val currentState = state.value

@@ -28,9 +28,6 @@ abstract class QueryFragment :
 
     protected lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
-    protected lateinit var viewModel: QueryViewModel
-
-
     override fun getCurrentListener(): Listener? {
         return listener
     }
@@ -103,7 +100,7 @@ abstract class QueryFragment :
                 listener?.onNoteFocusInBookRequest(ids.first())
 
             R.id.sync -> {
-                SyncRunner.startSync()
+                SyncRunner.startSync(requireContext())
             }
 
             R.id.activity_action_settings -> {

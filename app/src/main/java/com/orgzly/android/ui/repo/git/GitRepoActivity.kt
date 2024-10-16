@@ -1,6 +1,5 @@
 package com.orgzly.android.ui.repo.git
 
-
 import android.app.Activity
 import android.app.ProgressDialog
 import android.content.Intent
@@ -19,7 +18,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.textfield.TextInputLayout
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.git.GitPreferences
 import com.orgzly.android.git.GitSSHKeyTransportSetter
 import com.orgzly.android.git.GitTransportSetter
@@ -36,6 +34,7 @@ import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.databinding.ActivityRepoGitBinding
+import dagger.hilt.android.AndroidEntryPoint
 import org.eclipse.jgit.api.errors.TransportException
 import org.eclipse.jgit.errors.NoRemoteRepositoryException
 import org.eclipse.jgit.errors.NotSupportedException
@@ -44,6 +43,7 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.io.IOException
 
+@AndroidEntryPoint
 class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var binding: ActivityRepoGitBinding
 
@@ -54,8 +54,6 @@ class GitRepoActivity : CommonActivity(), GitPreferences {
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityRepoGitBinding.inflate(layoutInflater)

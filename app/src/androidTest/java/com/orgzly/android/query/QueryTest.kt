@@ -5,6 +5,7 @@ import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.query.sql.SqliteQueryBuilder
 import com.orgzly.android.query.user.DottedQueryBuilder
 import com.orgzly.android.query.user.DottedQueryParser
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.Matchers.`is`
 import org.junit.Before
 import org.junit.Test
@@ -13,6 +14,7 @@ import org.junit.runners.Parameterized
 import java.util.*
 
 @RunWith(value = Parameterized::class)
+@HiltAndroidTest
 class QueryTest(private val param: Parameter) : OrgzlyTest() {
 
     private lateinit var actualParsedQuery: String

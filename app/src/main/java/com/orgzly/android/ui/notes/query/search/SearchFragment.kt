@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orgzly.BuildConfig
 import com.orgzly.R
@@ -19,28 +18,29 @@ import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.ui.OnViewHolderClickListener
 import com.orgzly.android.ui.SelectableItemAdapter
 import com.orgzly.android.ui.main.setupSearchView
-import com.orgzly.android.ui.notes.NoteItemTouchHelperCallback
-import com.orgzly.android.ui.notes.NoteItemViewHolder
 import com.orgzly.android.ui.notes.NotePopup
 import com.orgzly.android.ui.notes.query.QueryFragment
 import com.orgzly.android.ui.notes.query.QueryViewModel
 import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_DEFAULT_MODE
 import com.orgzly.android.ui.notes.query.QueryViewModel.Companion.APP_BAR_SELECTION_MODE
-import com.orgzly.android.ui.notes.query.QueryViewModelFactory
 import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.util.ActivityUtils
 import com.orgzly.android.ui.util.setDecorFitsSystemWindowsForBottomToolbar
 import com.orgzly.android.ui.util.setup
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentQuerySearchBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Displays search results.
  */
+@AndroidEntryPoint
 class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
     private lateinit var binding: FragmentQuerySearchBinding
 
     private lateinit var viewAdapter: SearchAdapter
+
+    private val viewModel: QueryViewModel by viewModels()
 
     private val appBarBackPressHandler = object : OnBackPressedCallback(false) {
         override fun handleOnBackPressed() {
@@ -48,16 +48,12 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
         }
     }
 
-
     override fun getAdapter(): SelectableItemAdapter? {
         return if (::viewAdapter.isInitialized) viewAdapter else null
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val factory = QueryViewModelFactory.forQuery(dataRepository)
-        viewModel = ViewModelProvider(this, factory).get(QueryViewModel::class.java)
 
         requireActivity().onBackPressedDispatcher.addCallback(this, appBarBackPressHandler)
         requireActivity().onBackPressedDispatcher.addCallback(this, notePopupDismissOnBackPress)
@@ -128,7 +124,7 @@ class SearchFragment : QueryFragment(), OnViewHolderClickListener<NoteView> {
             setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.sync -> {
-                        SyncRunner.startSync()
+                        SyncRunner.startSync(context)
                     }
 
                     R.id.activity_action_settings -> {

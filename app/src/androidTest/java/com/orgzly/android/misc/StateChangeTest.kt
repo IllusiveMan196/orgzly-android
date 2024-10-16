@@ -1,16 +1,17 @@
 package com.orgzly.android.misc
 
-import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.db.entity.BookView
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import java.io.StringWriter
 
+@HiltAndroidTest
 class StateChangeTest : OrgzlyTest() {
     @Before
     override fun setUp() {
@@ -123,7 +124,7 @@ class StateChangeTest : OrgzlyTest() {
     private fun exportBook(book: BookView): String {
         val sw = StringWriter()
 
-        NotesOrgExporter(dataRepository).exportBook(book.book, sw)
+        dataRepository.exportBook(book.book, sw)
 
         return sw.toString()
     }

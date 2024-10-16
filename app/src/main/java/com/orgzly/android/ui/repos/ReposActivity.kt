@@ -9,16 +9,14 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.prefs.AppPreferences
-import com.orgzly.android.repos.RepoFactory
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.CommonActivity
 import com.orgzly.android.ui.repo.directory.DirectoryRepoActivity
@@ -27,24 +25,20 @@ import com.orgzly.android.ui.repo.git.GitRepoActivity
 import com.orgzly.android.ui.repo.webdav.WebdavRepoActivity
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.databinding.ActivityReposBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * List of user-configured repositories.
  */
+@AndroidEntryPoint
 class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, ActivityCompat.OnRequestPermissionsResultCallback  {
     private lateinit var binding: ActivityReposBinding
 
-    @Inject
-    lateinit var repoFactory: RepoFactory
-
     private lateinit var listAdapter: ArrayAdapter<Repo>
 
-    lateinit var viewModel: ReposViewModel
+    private val viewModel: ReposViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityReposBinding.inflate(layoutInflater)
@@ -58,9 +52,6 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                 return getItem(position)?.id ?: 0
             }
         }
-
-        val factory = ReposViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProvider(this, factory).get(ReposViewModel::class.java)
 
         viewModel.repos.observe(this, Observer { repos ->
             listAdapter.clear()
@@ -105,7 +96,7 @@ class ReposActivity : CommonActivity(), AdapterView.OnItemClickListener, Activit
                         newRepos.removeItem(R.id.repos_options_menu_item_new_dropbox)
                     }
 
-                    if (!AppPreferences.gitIsEnabled(App.getAppContext())) {
+                    if (!AppPreferences.gitIsEnabled(this@ReposActivity)) {
                         newRepos.removeItem(R.id.repos_options_menu_item_new_git)
                     }
                 }

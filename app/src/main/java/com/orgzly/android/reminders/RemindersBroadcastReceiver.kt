@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import com.orgzly.BuildConfig
-import com.orgzly.android.App
 import com.orgzly.android.AppIntent
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.data.logs.AppLogsRepository
@@ -14,9 +13,11 @@ import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.async
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.AndroidEntryPoint
 import org.joda.time.DateTime
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class RemindersBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var dataRepository: DataRepository
@@ -28,8 +29,6 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
     lateinit var remindersScheduler: RemindersScheduler
 
     override fun onReceive(context: Context, intent: Intent) {
-        App.appComponent.inject(this)
-
         if (!anyRemindersEnabled(context, intent)) {
             return
         }

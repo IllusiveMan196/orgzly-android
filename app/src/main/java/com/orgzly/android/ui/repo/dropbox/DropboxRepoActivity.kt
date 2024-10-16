@@ -15,7 +15,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
-import com.orgzly.android.App
 import com.orgzly.android.repos.DropboxClient
 import com.orgzly.android.repos.DropboxRepo
 import com.orgzly.android.repos.RepoFactory
@@ -30,9 +29,10 @@ import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.MiscUtils
 import com.orgzly.android.util.UriUtils
 import com.orgzly.databinding.ActivityRepoDropboxBinding
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class DropboxRepoActivity : CommonActivity() {
     private lateinit var binding: ActivityRepoDropboxBinding
 
@@ -44,8 +44,6 @@ class DropboxRepoActivity : CommonActivity() {
     private lateinit var viewModel: RepoViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivityRepoDropboxBinding.inflate(layoutInflater)

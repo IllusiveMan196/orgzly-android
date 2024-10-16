@@ -10,13 +10,14 @@ import com.orgzly.R
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.espresso.util.EspressoUtils.*
 import com.orgzly.android.ui.main.MainActivity
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.CoreMatchers.instanceOf
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
 
-
+@HiltAndroidTest
 class InternalLinksTest : OrgzlyTest() {
     @Before
     @Throws(Exception::class)

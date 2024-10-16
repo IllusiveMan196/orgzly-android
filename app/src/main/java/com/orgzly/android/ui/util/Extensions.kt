@@ -71,7 +71,7 @@ private fun haveNetworkConnectionPreM(cm: ConnectivityManager): Boolean {
 @SuppressLint("ResourceType")
 fun SwipeRefreshLayout.setup() {
     setOnRefreshListener {
-        SyncRunner.startSync()
+        SyncRunner.startSync(context)
         isRefreshing = false
     }
 }

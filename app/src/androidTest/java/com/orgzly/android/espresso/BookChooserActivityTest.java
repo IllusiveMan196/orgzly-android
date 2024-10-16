@@ -1,17 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.app.Instrumentation;
-import android.content.Intent;
-
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.BookChooserActivity;
-
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-
 import static android.app.Activity.RESULT_OK;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -24,6 +12,21 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
 
+import android.app.Instrumentation;
+import android.content.Intent;
+
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.BookChooserActivity;
+
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
+
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class BookChooserActivityTest extends OrgzlyTest {
     private ActivityScenario<BookChooserActivity> startActivityWithCreateShortcutAction() {
         Intent intent = new Intent(context, BookChooserActivity.class);

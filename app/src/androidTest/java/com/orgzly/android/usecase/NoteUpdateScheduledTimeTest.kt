@@ -3,9 +3,11 @@ package com.orgzly.android.usecase
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.repos.RepoType
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.*
 import org.junit.Test
 
+@HiltAndroidTest
 class NoteUpdateScheduledTimeTest : OrgzlyTest() {
     @Test
     fun book_markedAsModified() {

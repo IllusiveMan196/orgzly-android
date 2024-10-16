@@ -15,7 +15,7 @@ public class SyncShortcutActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SyncRunner.startSync();
+        SyncRunner.startSync(this);
         finish();
     }
 }

@@ -2,18 +2,17 @@ package com.orgzly.android.misc
 
 import com.orgzly.R
 import com.orgzly.android.BookFormat
-import com.orgzly.android.LocalStorage
-import com.orgzly.android.NotesOrgExporter
 import com.orgzly.android.OrgzlyTest
-import com.orgzly.android.db.entity.Repo
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.repos.RepoType
 import com.orgzly.android.ui.note.NotePayload
 import com.orgzly.org.datetime.OrgDateTime
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.*
 import org.junit.Test
 import java.io.File
 
+@HiltAndroidTest
 class CreatedAtTest : OrgzlyTest() {
     @Test
     fun testImportUsesCreatedAtValue() {
@@ -49,7 +48,7 @@ class CreatedAtTest : OrgzlyTest() {
                         ":END:\n")
 
         withTempFile { file ->
-            NotesOrgExporter(dataRepository).exportBook(book.book, file)
+            dataRepository.exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 
@@ -76,7 +75,7 @@ class CreatedAtTest : OrgzlyTest() {
                 dataRepository.updateNote(it.id, NotePayload.getInstance(it.title, it.content))
             }
 
-            NotesOrgExporter(dataRepository).exportBook(book.book, file)
+            dataRepository.exportBook(book.book, file)
 
             dataRepository.loadBookFromFile("book-a", BookFormat.ORG, file)
 

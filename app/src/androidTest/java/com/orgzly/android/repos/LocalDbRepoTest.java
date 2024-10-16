@@ -5,7 +5,6 @@ import static org.junit.Assert.assertTrue;
 
 import com.orgzly.android.BookFormat;
 import com.orgzly.android.BookName;
-import com.orgzly.android.NotesOrgExporter;
 import com.orgzly.android.OrgzlyTest;
 import com.orgzly.android.db.entity.Book;
 import com.orgzly.android.db.entity.Repo;
@@ -19,6 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class LocalDbRepoTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {
@@ -56,7 +58,7 @@ public class LocalDbRepoTest extends OrgzlyTest {
         File tmpFile = dataRepository.getTempBookFile();
 
         try {
-            new NotesOrgExporter(dataRepository).exportBook(book, tmpFile);
+            dataRepository.exportBook(book, tmpFile);
             repo = testUtils.repoInstance(RepoType.MOCK, "mock://repo-a");
             repo.storeBook(tmpFile, BookName.fileName(book.getName(), BookFormat.ORG));
         } finally {

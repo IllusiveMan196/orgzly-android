@@ -50,7 +50,7 @@ object ImageLoader {
         if (hasSupportedExtension(path)) {
             val text = textWithMarkup.text as Spannable
             // Get the current context
-            val context = App.getAppContext()
+            val context = App.appContext
 
             val file = UseCaseRunner.run(LinkFindTarget(path)).userData
 

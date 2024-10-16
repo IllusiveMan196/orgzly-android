@@ -50,8 +50,12 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-@SuppressWarnings("unchecked")
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+// @SuppressWarnings("unchecked")
+@HiltAndroidTest
 public class SyncingTest extends OrgzlyTest {
+
     /**
      * Utility method for starting sync using drawer button.
      */
@@ -777,7 +781,7 @@ public class SyncingTest extends OrgzlyTest {
                 1520681916000L);
 
         // Sync by starting the service directly, to keep note selected
-        SyncRunner.startSync();
+        SyncRunner.startSync(context);
         SystemClock.sleep(1000);
 
         onNotesInBook().check(matches(recyclerViewItemCount(2)));

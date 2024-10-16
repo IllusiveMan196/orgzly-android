@@ -8,8 +8,11 @@ import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
 import com.orgzly.android.usecase.RepoDelete
 import com.orgzly.android.usecase.UseCaseRunner
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ReposViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
+@HiltViewModel
+class ReposViewModel @Inject constructor(private val dataRepository: DataRepository) : CommonViewModel() {
     val repos: LiveData<List<Repo>> by lazy {
         dataRepository.selectRepos()
     }

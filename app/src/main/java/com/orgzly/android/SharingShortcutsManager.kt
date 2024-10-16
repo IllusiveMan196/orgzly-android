@@ -13,15 +13,10 @@ import com.orgzly.android.util.LogUtils
 import com.orgzly.org.OrgFileSettings
 import javax.inject.Inject
 
-class SharingShortcutsManager {
-    @Inject
-    lateinit var dataRepository: DataRepository
-
+class SharingShortcutsManager @Inject constructor(
+    private val dataRepository: DataRepository
+) {
     private val categoryTextShareTarget = "com.orgzly.android.directshare.category.SPECIFIC_NOTEBOOK"
-
-    init {
-        App.appComponent.inject(this)
-    }
 
     fun replaceDynamicShortcuts(context: Context) {
         App.EXECUTORS.diskIO().execute {

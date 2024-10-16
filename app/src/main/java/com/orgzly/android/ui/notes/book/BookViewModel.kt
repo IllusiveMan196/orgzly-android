@@ -7,9 +7,9 @@ import com.orgzly.android.App
 import com.orgzly.android.data.DataRepository
 import com.orgzly.android.db.entity.Book
 import com.orgzly.android.db.entity.NoteView
+import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.ui.SingleLiveEvent
-import com.orgzly.android.ui.AppBar
 import com.orgzly.android.usecase.BookCycleVisibility
 import com.orgzly.android.usecase.UseCaseRunner
 

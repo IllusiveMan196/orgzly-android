@@ -1,5 +1,8 @@
 package com.orgzly.android.repos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.android.BookName;
 import com.orgzly.android.OrgzlyTest;
@@ -15,9 +18,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
+@HiltAndroidTest
 public class DropboxRepoTest extends OrgzlyTest {
     private static final String DROPBOX_TEST_DIR = "/orgzly-android-tests";
 

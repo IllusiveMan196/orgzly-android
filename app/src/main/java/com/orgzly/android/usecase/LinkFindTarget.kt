@@ -7,7 +7,7 @@ import com.orgzly.android.prefs.AppPreferences
 import java.io.File
 
 class LinkFindTarget(val path: String) : UseCase() {
-    val context = App.getAppContext();
+    val context = App.appContext
 
     override fun run(dataRepository: DataRepository): UseCaseResult {
         val target = openLink(dataRepository, path)

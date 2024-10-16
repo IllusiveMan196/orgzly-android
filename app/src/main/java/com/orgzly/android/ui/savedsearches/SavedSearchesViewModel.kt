@@ -1,14 +1,17 @@
 package com.orgzly.android.ui.savedsearches
 
-import com.orgzly.android.data.DataRepository
-import com.orgzly.android.db.entity.SavedSearch
-import com.orgzly.android.ui.CommonViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
+import com.orgzly.android.data.DataRepository
+import com.orgzly.android.db.entity.SavedSearch
 import com.orgzly.android.ui.AppBar
+import com.orgzly.android.ui.CommonViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class SavedSearchesViewModel(dataRepository: DataRepository) : CommonViewModel() {
+@HiltViewModel
+class SavedSearchesViewModel @Inject constructor(dataRepository: DataRepository) : CommonViewModel() {
     enum class ViewState {
         LOADING,
         LOADED,

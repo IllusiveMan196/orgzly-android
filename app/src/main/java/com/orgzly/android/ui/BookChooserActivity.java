@@ -21,9 +21,12 @@ import com.orgzly.android.util.LogUtils;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * Activity for creating a notebook shortcut.
  */
+@AndroidEntryPoint
 public class BookChooserActivity extends CommonActivity
         implements BooksFragment.Listener {
 
@@ -36,8 +39,6 @@ public class BookChooserActivity extends CommonActivity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        App.appComponent.inject(this);
-
         super.onCreate(savedInstanceState);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, savedInstanceState);

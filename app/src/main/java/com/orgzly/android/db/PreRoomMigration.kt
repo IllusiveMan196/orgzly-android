@@ -18,7 +18,7 @@ import com.orgzly.org.parser.OrgNestedSetParser
 import java.util.*
 import java.util.regex.Pattern
 
-object PreRoomMigration {
+class PreRoomMigration(context: Context) {
     val MIGRATION_130_131 = object : Migration(130, 131) {
         override fun migrate(db: SupportSQLiteDatabase) {
             db.execSQL("ALTER TABLE books ADD COLUMN title") // TITLE
@@ -648,7 +648,7 @@ object PreRoomMigration {
 
     val MIGRATION_146_147 = object : Migration(146, 147) {
         override fun migrate(db: SupportSQLiteDatabase) {
-            addAndSetCreatedAt(db, App.getAppContext())
+            addAndSetCreatedAt(db, context)
         }
     }
 

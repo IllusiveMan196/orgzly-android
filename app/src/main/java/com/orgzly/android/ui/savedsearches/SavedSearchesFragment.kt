@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -32,12 +33,14 @@ import com.orgzly.android.ui.settings.SettingsActivity
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.util.LogUtils
 import com.orgzly.databinding.FragmentSavedSearchesBinding
+import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 import javax.inject.Inject
 
 /**
  * Displays and allows modifying saved searches.
  */
+@AndroidEntryPoint
 class SavedSearchesFragment : CommonFragment(), DrawerItem, OnViewHolderClickListener<SavedSearch> {
     private lateinit var binding: FragmentSavedSearchesBinding
 
@@ -50,7 +53,7 @@ class SavedSearchesFragment : CommonFragment(), DrawerItem, OnViewHolderClickLis
     @Inject
     lateinit var dataRepository: DataRepository
 
-    private lateinit var viewModel: SavedSearchesViewModel
+    private val viewModel: SavedSearchesViewModel by viewModels()
 
     private lateinit var sharedMainActivityViewModel: SharedMainActivityViewModel
 
@@ -65,16 +68,11 @@ class SavedSearchesFragment : CommonFragment(), DrawerItem, OnViewHolderClickLis
     override fun onAttach(context: Context) {
         super.onAttach(context)
 
-        App.appComponent.inject(this)
-
         listener = activity as Listener
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val factory = SavedSearchesViewModelFactory.getInstance(dataRepository)
-        viewModel = ViewModelProvider(this, factory).get(SavedSearchesViewModel::class.java)
 
         sharedMainActivityViewModel = ViewModelProvider(requireActivity())
                 .get(SharedMainActivityViewModel::class.java)
@@ -137,7 +135,7 @@ class SavedSearchesFragment : CommonFragment(), DrawerItem, OnViewHolderClickLis
                     }
 
                     R.id.sync -> {
-                        SyncRunner.startSync()
+                        SyncRunner.startSync(context)
                     }
 
                     R.id.activity_action_settings -> {

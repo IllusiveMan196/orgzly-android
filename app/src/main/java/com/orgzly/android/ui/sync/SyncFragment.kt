@@ -12,12 +12,11 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.orgzly.BuildConfig
 import com.orgzly.R
 import com.orgzly.android.App
-import com.orgzly.android.data.DataRepository
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.sync.SyncRunner
 import com.orgzly.android.sync.SyncState
@@ -28,21 +27,19 @@ import com.orgzly.android.usecase.UseCaseResult
 import com.orgzly.android.usecase.UseCaseRunner
 import com.orgzly.android.util.LogUtils.d
 import com.orgzly.databinding.FragmentSyncBinding
-import javax.inject.Inject
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Retained fragment for user actions.
  */
+@AndroidEntryPoint
 class SyncFragment : Fragment() {
     private lateinit var binding: FragmentSyncBinding
 
     /** Activity which has this fragment attached. Used as a target for hooks.  */
     private var mListener: Listener? = null
 
-    @Inject
-    lateinit var dataRepository: DataRepository
-
-    private lateinit var viewModel: SyncViewModel
+    private val viewModel: SyncViewModel by viewModels()
 
     /**
      * Hold a reference to the parent Activity so we can report the
@@ -52,7 +49,6 @@ class SyncFragment : Fragment() {
      */
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        App.appComponent.inject(this)
 
         /* This makes sure that the container activity has implemented
          * the callback interface. If not, it throws an exception
@@ -62,20 +58,6 @@ class SyncFragment : Fragment() {
         } catch (e: ClassCastException) {
             throw ClassCastException(requireActivity().toString() + " must implement " + Listener::class.java)
         }
-    }
-
-    /**
-     * This method will only be called once when the retained
-     * Fragment is first created.
-     */
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (BuildConfig.LOG_DEBUG) d(TAG, savedInstanceState)
-
-        // Retain this fragment across configuration changes.
-        retainInstance = true
-
-        viewModel = ViewModelProvider(this)[SyncViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -234,9 +216,9 @@ class SyncFragment : Fragment() {
             binding.syncButtonContainer.run {
                 setOnClickListener {
                     if (viewModel.isSyncRunning()) {
-                        SyncRunner.stopSync()
+                        SyncRunner.stopSync(context)
                     } else {
-                        SyncRunner.startSync()
+                        SyncRunner.startSync(context)
                     }
                 }
 

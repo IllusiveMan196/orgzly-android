@@ -35,7 +35,7 @@ class RefileViewModel(
     val refiledEvent: SingleLiveEvent<UseCaseResult> = SingleLiveEvent()
 
     fun openForTheFirstTime() {
-        val location = AppPreferences.refileLastLocation(App.getAppContext()).let {
+        val location = AppPreferences.refileLastLocation(App.appContext).let {
             RefileLocation.fromJson(it)
         }
 
@@ -166,7 +166,7 @@ class RefileViewModel(
             }
         }
 
-        AppPreferences.refileLastLocation(App.getAppContext(), lastLocation)
+        AppPreferences.refileLastLocation(App.appContext, lastLocation)
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Refile last location saved: $lastLocation")
     }

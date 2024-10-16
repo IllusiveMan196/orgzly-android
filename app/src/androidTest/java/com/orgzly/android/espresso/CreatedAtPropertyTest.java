@@ -1,16 +1,5 @@
 package com.orgzly.android.espresso;
 
-import android.widget.EditText;
-
-import androidx.test.core.app.ActivityScenario;
-
-import com.orgzly.R;
-import com.orgzly.android.OrgzlyTest;
-import com.orgzly.android.ui.main.MainActivity;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
@@ -29,6 +18,20 @@ import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.Matchers.allOf;
 
+import android.widget.EditText;
+
+import androidx.test.core.app.ActivityScenario;
+
+import com.orgzly.R;
+import com.orgzly.android.OrgzlyTest;
+import com.orgzly.android.ui.main.MainActivity;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class CreatedAtPropertyTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {

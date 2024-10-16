@@ -3,14 +3,13 @@ package com.orgzly.android.misc
 import com.orgzly.android.OrgzlyTest
 import com.orgzly.android.prefs.AppPreferences
 import com.orgzly.android.ui.note.NoteBuilder
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Test
 import java.io.IOException
 
-/**
- *
- */
+@HiltAndroidTest
 class SettingsTest : OrgzlyTest() {
     @Test
     @Throws(IOException::class)

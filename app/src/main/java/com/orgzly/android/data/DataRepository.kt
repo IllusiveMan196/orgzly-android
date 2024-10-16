@@ -49,10 +49,13 @@ import com.orgzly.org.datetime.OrgRange
 import com.orgzly.org.parser.OrgNestedSetParserListener
 import com.orgzly.org.parser.OrgNodeInSet
 import com.orgzly.org.parser.OrgParser
+import com.orgzly.org.parser.OrgParserSettings
 import com.orgzly.org.parser.OrgParserWriter
 import com.orgzly.org.utils.StateChangeLogic
+import dagger.hilt.android.qualifiers.ApplicationContext
 import java.io.*
 import java.lang.IllegalStateException
+import java.nio.charset.Charset
 import java.util.*
 import java.util.concurrent.Callable
 import javax.inject.Inject
@@ -61,15 +64,15 @@ import javax.inject.Singleton
 // TODO: Split
 @Singleton
 class DataRepository @Inject constructor(
-        private val context: Context,
-        private val db: OrgzlyDatabase,
-        private val repoFactory: RepoFactory,
-        private val resources: Resources,
-        private val localStorage: LocalStorage) {
-
+    @ApplicationContext private val context: Context,
+    private val db: OrgzlyDatabase,
+    private val repoFactory: RepoFactory,
+    private val resources: Resources,
+    private val localStorage: LocalStorage
+) {
     fun forceLoadBook(bookId: Long) {
         val book = getBookView(bookId)
-                ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
+            ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
 
         try {
             if (book.linkRepo == null) {
@@ -77,16 +80,16 @@ class DataRepository @Inject constructor(
             }
 
             setBookLastActionAndSyncStatus(bookId, BookAction.forNow(
-                    BookAction.Type.PROGRESS,
-                    resources.getString(R.string.force_loading_from_uri, book.linkRepo.url)))
+                BookAction.Type.PROGRESS,
+                resources.getString(R.string.force_loading_from_uri, book.linkRepo.url)))
 
             val fileName = BookName.getFileName(context, book)
 
             val loadedBook = loadBookFromRepo(book.linkRepo.id, book.linkRepo.type, book.linkRepo.url, fileName)
 
             setBookLastActionAndSyncStatus(loadedBook!!.book.id, BookAction.forNow(
-                    BookAction.Type.INFO,
-                    resources.getString(R.string.force_loaded_from_uri, loadedBook.syncedTo?.uri)))
+                BookAction.Type.INFO,
+                resources.getString(R.string.force_loaded_from_uri, loadedBook.syncedTo?.uri)))
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -101,7 +104,7 @@ class DataRepository @Inject constructor(
 
     fun forceSaveBook(bookId: Long) {
         val book = getBookView(bookId)
-                ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
+            ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
 
         val fileName: String = BookName.getFileName(context, book)
 
@@ -110,16 +113,16 @@ class DataRepository @Inject constructor(
             val repoEntity = book.linkRepo ?: defaultRepoForSavingBook()
 
             setBookLastActionAndSyncStatus(book.book.id, BookAction.forNow(
-                    BookAction.Type.PROGRESS,
-                    resources.getString(R.string.force_saving_to_uri, repoEntity)))
+                BookAction.Type.PROGRESS,
+                resources.getString(R.string.force_saving_to_uri, repoEntity)))
 
             saveBookToRepo(repoEntity, fileName, book, BookFormat.ORG)
 
             val savedBook = getBookView(bookId)
 
             setBookLastActionAndSyncStatus(bookId, BookAction.forNow(
-                    BookAction.Type.INFO,
-                    resources.getString(R.string.force_saved_to_uri, savedBook?.syncedTo?.uri)))
+                BookAction.Type.INFO,
+                resources.getString(R.string.force_saved_to_uri, savedBook?.syncedTo?.uri)))
 
         } catch (e: Exception) {
             e.printStackTrace()
@@ -143,10 +146,10 @@ class DataRepository @Inject constructor(
      */
     @Throws(IOException::class)
     fun saveBookToRepo(
-            repoEntity: Repo,
-            fileName: String,
-            bookView: BookView,
-            @Suppress("UNUSED_PARAMETER") format: BookFormat) {
+        repoEntity: Repo,
+        fileName: String,
+        bookView: BookView,
+        @Suppress("UNUSED_PARAMETER") format: BookFormat) {
 
         val uploadedBook: VersionedRook
 
@@ -155,7 +158,7 @@ class DataRepository @Inject constructor(
         val tmpFile = getTempBookFile()
         try {
             /* Write to temporary file. */
-            NotesOrgExporter(this).exportBook(bookView.book, tmpFile)
+            exportBook(bookView.book, tmpFile)
 
             /* Upload to repo. */
             uploadedBook = repo.storeBook(tmpFile, fileName)
@@ -267,7 +270,7 @@ class DataRepository @Inject constructor(
         if (book != null) {
             val file = getTempBookFile()
             try {
-                NotesOrgExporter(this).exportBook(book, file)
+                exportBook(book, file)
                 return MiscUtils.readStringFromFile(file)
             } finally {
                 file.delete()
@@ -307,11 +310,11 @@ class DataRepository @Inject constructor(
         }
 
         val book = Book(
-                0,
-                name,
-                mtime = System.currentTimeMillis(),
-                lastAction = BookAction.forNow(BookAction.Type.INFO, resources.getString(R.string.created)),
-                isDummy = dummy
+            0,
+            name,
+            mtime = System.currentTimeMillis(),
+            lastAction = BookAction.forNow(BookAction.Type.INFO, resources.getString(R.string.created)),
+            isDummy = dummy
         )
 
         val id = db.runInTransaction(Callable {
@@ -351,7 +354,7 @@ class DataRepository @Inject constructor(
             }
 
             setBookLastAction(
-                    bookView.book.id, BookAction.forNow(BookAction.Type.ERROR, message))
+                bookView.book.id, BookAction.forNow(BookAction.Type.ERROR, message))
         }
     }
 
@@ -394,8 +397,8 @@ class DataRepository @Inject constructor(
         }
 
         setBookLastAction(book.id, BookAction.forNow(
-                BookAction.Type.INFO,
-                resources.getString(R.string.renamed_book_from, oldName)))
+            BookAction.Type.INFO,
+            resources.getString(R.string.renamed_book_from, oldName)))
     }
 
     fun setBookPreface(bookId: Long, preface: String) {
@@ -413,11 +416,11 @@ class DataRepository @Inject constructor(
     @JvmOverloads
     fun setBookLastActionAndSyncStatus(bookId: Long, action: BookAction, status: String? = null) {
         val updated = db.book().updateLastActionAndSyncStatus(
-                bookId,
-                action.type,
-                action.message,
-                System.currentTimeMillis(),
-                status)
+            bookId,
+            action.type,
+            action.message,
+            System.currentTimeMillis(),
+            status)
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, "Updating book $bookId status to $status ($updated updated)")
@@ -433,8 +436,8 @@ class DataRepository @Inject constructor(
         val rookId = db.rook().getOrInsert(repoId, rookUrlId)
 
         val versionedRookId = db.versionedRook().replace(
-                com.orgzly.android.db.entity.VersionedRook(
-                        0, rookId, rookRevision, rookMtime))
+            com.orgzly.android.db.entity.VersionedRook(
+                0, rookId, rookRevision, rookMtime))
 
         db.bookLink().upsert(bookId, repoId)
         db.bookSync().upsert(bookId, versionedRookId)
@@ -564,7 +567,7 @@ class DataRepository @Inject constructor(
             val note = db.note().getFirst(ids) ?: return@Callable 0
 
             val previousSibling = db.note().getPreviousSibling(
-                    note.position.bookId, note.position.lft, note.position.parentId)
+                note.position.bookId, note.position.lft, note.position.parentId)
 
             if (previousSibling != null) {
                 return@Callable moveSubtrees(ids, Place.UNDER, previousSibling.id)
@@ -577,21 +580,21 @@ class DataRepository @Inject constructor(
     fun moveNote(bookId: Long, noteIds: Set<Long>, direction: Int): Int {
         return db.runInTransaction(Callable {
             val target: NotePlace? =
-                    if (direction == -1) { // Move up
-                        db.note().getFirst(noteIds)?.let { note ->
-                            db.note().getPreviousSibling(bookId, note.position.lft, note.position.parentId)?.let { sibling ->
-                                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Place above ${sibling.title}")
-                                NotePlace(bookId, sibling.id, Place.ABOVE)
-                            }
-                        }
-                    } else { // Move down
-                        db.note().getLast(noteIds)?.let { note ->
-                            db.note().getNextSibling(bookId, note.position.rgt, note.position.parentId)?.let { sibling ->
-                                if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Place below ${sibling.title}")
-                                NotePlace(bookId, sibling.id, Place.BELOW)
-                            }
+                if (direction == -1) { // Move up
+                    db.note().getFirst(noteIds)?.let { note ->
+                        db.note().getPreviousSibling(bookId, note.position.lft, note.position.parentId)?.let { sibling ->
+                            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Place above ${sibling.title}")
+                            NotePlace(bookId, sibling.id, Place.ABOVE)
                         }
                     }
+                } else { // Move down
+                    db.note().getLast(noteIds)?.let { note ->
+                        db.note().getNextSibling(bookId, note.position.rgt, note.position.parentId)?.let { sibling ->
+                            if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, "Place below ${sibling.title}")
+                            NotePlace(bookId, sibling.id, Place.BELOW)
+                        }
+                    }
+                }
 
             target?.let {
                 return@Callable moveSubtrees(noteIds, it.place, it.noteId)
@@ -625,10 +628,10 @@ class DataRepository @Inject constructor(
     }
 
     private fun pasteNotesClipboard(
-            clipboard: NotesClipboard,
-            bookId: Long,
-            place: Place,
-            targetNoteId: Long): Int {
+        clipboard: NotesClipboard,
+        bookId: Long,
+        place: Place,
+        targetNoteId: Long): Int {
 
         val pastedNoteIds = mutableSetOf<Long>()
 
@@ -673,7 +676,7 @@ class DataRepository @Inject constructor(
             val rgt = targetPosition.lft + entry.note.position.rgt - 1
 
             val foldedUnderId = idsMap[entry.note.position.foldedUnderId]
-                    ?: if (targetPosition.foldedUnder != 0L) targetPosition.foldedUnder else 0
+                ?: if (targetPosition.foldedUnder != 0L) targetPosition.foldedUnder else 0
 
             while (lastNoteId != 0L && entry.note.position.level > parentIds.size) {
                 parentIds.addLast(lastNoteId)
@@ -684,15 +687,15 @@ class DataRepository @Inject constructor(
             }
 
             val note = entry.note.copy(
-                    id = 0,
-                    position = entry.note.position.copy(
-                            bookId = targetNote.position.bookId,
-                            lft = lft,
-                            rgt = rgt,
-                            level = level,
-                            parentId = parentIds.peekLast() ?: 0,
-                            foldedUnderId = foldedUnderId
-                    )
+                id = 0,
+                position = entry.note.position.copy(
+                    bookId = targetNote.position.bookId,
+                    lft = lft,
+                    rgt = rgt,
+                    level = level,
+                    parentId = parentIds.peekLast() ?: 0,
+                    foldedUnderId = foldedUnderId
+                )
             )
 
             lastNoteId = db.note().insert(note)
@@ -740,7 +743,7 @@ class DataRepository @Inject constructor(
 
         fun output(note: Note, level: Int, lft: Long, rgt: Long) {
             notesPerLft[lft] = note.copy(
-                    position = note.position.copy(level = level, lft = lft, rgt = rgt))
+                position = note.position.copy(level = level, lft = lft, rgt = rgt))
         }
 
         var notes = 0
@@ -847,17 +850,17 @@ class DataRepository @Inject constructor(
         // Update notes
         alignedNotes.map { note ->
             db.note().updateNote(
-                    note.id,
-                    targetNote.position.bookId,
-                    targetPosition.level + note.position.level - 1,
-                    targetPosition.lft + note.position.lft - 1,
-                    targetPosition.lft + note.position.rgt - 1,
-                    // Set parent ID for top-level notes
-                    if (note.position.level == 1) {
-                        targetPosition.parentId
-                    } else {
-                        (note.position.parentId)
-                    })
+                note.id,
+                targetNote.position.bookId,
+                targetPosition.level + note.position.level - 1,
+                targetPosition.lft + note.position.lft - 1,
+                targetPosition.lft + note.position.rgt - 1,
+                // Set parent ID for top-level notes
+                if (note.position.level == 1) {
+                    targetPosition.parentId
+                } else {
+                    (note.position.parentId)
+                })
 
             // Collect new note IDs and source book IDs
             ids.add(note.id)
@@ -895,10 +898,10 @@ class DataRepository @Inject constructor(
     }
 
     data class TargetPosition(
-            val lft: Long = 0,
-            val level: Int = 0,
-            val parentId: Long = 0,
-            val foldedUnder: Long = 0) {
+        val lft: Long = 0,
+        val level: Int = 0,
+        val parentId: Long = 0,
+        val foldedUnder: Long = 0) {
 
         companion object {
             fun getInstance(db: OrgzlyDatabase, targetNote: Note, place: Place): TargetPosition {
@@ -921,7 +924,7 @@ class DataRepository @Inject constructor(
 
                     Place.UNDER -> {
                         val lastDescendant = db.note().getLastHighestLevelDescendant(
-                                targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
+                            targetNote.position.bookId, targetNote.position.lft, targetNote.position.rgt)
 
                         if (BuildConfig.LOG_DEBUG)
                             LogUtils.d(TAG, "lastDescendant: $lastDescendant")
@@ -1095,11 +1098,11 @@ class DataRepository @Inject constructor(
                     val scl = StateChangeLogic(doneKeywords)
 
                     scl.setState(
-                            state,
-                            note.state,
-                            OrgRange.parseOrNull(note.scheduled),
-                            OrgRange.parseOrNull(note.deadline),
-                            eventsInNote.timestamps.map { OrgRange(it) })
+                        state,
+                        note.state,
+                        OrgRange.parseOrNull(note.scheduled),
+                        OrgRange.parseOrNull(note.deadline),
+                        eventsInNote.timestamps.map { OrgRange(it) })
 
                     if (scl.isShifted) {
                         eventsInNote.replaceEvents(scl.timestamps).apply {
@@ -1197,12 +1200,12 @@ class DataRepository @Inject constructor(
         }
 
         val supportQuery = SupportSQLiteQueryBuilder
-                .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS})")
-                .selection(selection2, selectionArgs.toTypedArray())
-                .groupBy(groupBy)
-                .having(having)
-                .orderBy(orderBy)
-                .create()
+            .builder("(${NoteViewDao.QUERY_WITH_NOTE_EVENTS})")
+            .selection(selection2, selectionArgs.toTypedArray())
+            .groupBy(groupBy)
+            .having(having)
+            .orderBy(orderBy)
+            .create()
 
         if (BuildConfig.LOG_DEBUG)
             LogUtils.d(TAG, "Selecting notes using query $query "
@@ -1379,11 +1382,11 @@ class DataRepository @Inject constructor(
                 }
 
                 NotePosition(
-                        bookId = target.bookId,
-                        lft = targetNote.position.lft,
-                        rgt = targetNote.position.lft + 1,
-                        level = targetNote.position.level,
-                        parentId = targetNote.position.parentId)
+                    bookId = target.bookId,
+                    lft = targetNote.position.lft,
+                    rgt = targetNote.position.lft + 1,
+                    level = targetNote.position.level,
+                    parentId = targetNote.position.parentId)
             }
 
             Place.BELOW -> {
@@ -1392,11 +1395,11 @@ class DataRepository @Inject constructor(
                 }
 
                 NotePosition(
-                        bookId = target.bookId,
-                        lft = targetNote.position.rgt + 1,
-                        rgt = targetNote.position.rgt + 2,
-                        level = targetNote.position.level,
-                        parentId = targetNote.position.parentId
+                    bookId = target.bookId,
+                    lft = targetNote.position.rgt + 1,
+                    rgt = targetNote.position.rgt + 2,
+                    level = targetNote.position.level,
+                    parentId = targetNote.position.parentId
                 )
             }
 
@@ -1406,12 +1409,12 @@ class DataRepository @Inject constructor(
                 }
 
                 NotePosition(
-                        bookId = target.bookId,
-                        lft = targetNote.position.rgt,
-                        rgt = targetNote.position.rgt + 1,
-                        level = targetNote.position.level + 1,
-                        parentId = targetNote.id,
-                        foldedUnderId = if (targetNote.position.isFolded) targetNote.id else 0
+                    bookId = target.bookId,
+                    lft = targetNote.position.rgt,
+                    rgt = targetNote.position.rgt + 1,
+                    level = targetNote.position.level + 1,
+                    parentId = targetNote.id,
+                    foldedUnderId = if (targetNote.position.isFolded) targetNote.id else 0
                 )
             }
 
@@ -1425,11 +1428,11 @@ class DataRepository @Inject constructor(
                 val rootId = db.note().getRootNodeId(target.bookId) ?: 0
 
                 NotePosition(
-                        bookId = target.bookId,
-                        lft = rootRgt,
-                        rgt = rootRgt + 1,
-                        level = 1,
-                        parentId = rootId
+                    bookId = target.bookId,
+                    lft = rootRgt,
+                    rgt = rootRgt + 1,
+                    level = 1,
+                    parentId = rootId
                 )
             }
         }
@@ -1439,7 +1442,7 @@ class DataRepository @Inject constructor(
             makeSpaceForNewNotes(1, targetNote!!, target.place)
 
             val count = db.note().incrementDescendantsCountForAncestors(
-                    target.bookId, newNotePosition.lft, newNotePosition.rgt)
+                target.bookId, newNotePosition.lft, newNotePosition.rgt)
 
             if (BuildConfig.LOG_DEBUG)
                 LogUtils.d(TAG, "Updated descendants_count for $count notes (${target.bookId}, ${newNotePosition.lft}, ${newNotePosition.rgt})")
@@ -1448,20 +1451,20 @@ class DataRepository @Inject constructor(
         db.note().incrementRgtForRootNote(target.bookId)
 
         val noteEntity = Note(
-                0,
-                0,
-                time,
-                notePayload.title,
-                Note.dbSerializeTags(notePayload.tags),
-                notePayload.state,
-                notePayload.priority,
-                notePayload.content,
-                MiscUtils.lineCount(notePayload.content),
-                getOrgRangeId(notePayload.scheduled),
-                getOrgRangeId(notePayload.deadline),
-                getOrgRangeId(notePayload.closed),
-                null,
-                newNotePosition)
+            0,
+            0,
+            time,
+            notePayload.title,
+            Note.dbSerializeTags(notePayload.tags),
+            notePayload.state,
+            notePayload.priority,
+            notePayload.content,
+            MiscUtils.lineCount(notePayload.content),
+            getOrgRangeId(notePayload.scheduled),
+            getOrgRangeId(notePayload.deadline),
+            getOrgRangeId(notePayload.closed),
+            null,
+            newNotePosition)
 
 
         val noteId = db.note().insert(noteEntity)
@@ -1520,15 +1523,15 @@ class DataRepository @Inject constructor(
             replaceNoteEvents(noteId, notePayload.title, notePayload.content)
 
             val newNote = note.copy(
-                    title = notePayload.title,
-                    content = notePayload.content,
-                    contentLineCount = MiscUtils.lineCount(notePayload.content),
-                    state = notePayload.state,
-                    priority = notePayload.priority,
-                    scheduledRangeId = getOrgRangeId(notePayload.scheduled),
-                    deadlineRangeId = getOrgRangeId(notePayload.deadline),
-                    closedRangeId = getOrgRangeId(notePayload.closed),
-                    tags = Note.dbSerializeTags(notePayload.tags)
+                title = notePayload.title,
+                content = notePayload.content,
+                contentLineCount = MiscUtils.lineCount(notePayload.content),
+                state = notePayload.state,
+                priority = notePayload.priority,
+                scheduledRangeId = getOrgRangeId(notePayload.scheduled),
+                deadlineRangeId = getOrgRangeId(notePayload.deadline),
+                closedRangeId = getOrgRangeId(notePayload.closed),
+                tags = Note.dbSerializeTags(notePayload.tags)
             )
 
             val count = db.note().update(newNote)
@@ -1638,11 +1641,11 @@ class DataRepository @Inject constructor(
     @JvmOverloads
     @Throws(IOException::class)
     fun loadBookFromFile(
-            name: String,
-            @Suppress("UNUSED_PARAMETER") format: BookFormat,
-            file: File,
-            vrook: VersionedRook? = null,
-            selectedEncoding: String? = null
+        name: String,
+        @Suppress("UNUSED_PARAMETER") format: BookFormat,
+        file: File,
+        vrook: VersionedRook? = null,
+        selectedEncoding: String? = null
     ): BookView? {
 
         val encoding = if (selectedEncoding == null && AppPreferences.forceUtf8(context)) {
@@ -1657,20 +1660,20 @@ class DataRepository @Inject constructor(
     }
 
     private fun loadBookFromFile(
-            filePath: String,
-            bookName: String,
-            vrook: VersionedRook?,
-            selectedEncoding: String?): Long {
+        filePath: String,
+        bookName: String,
+        vrook: VersionedRook?,
+        selectedEncoding: String?): Long {
 
         try {
             val encoding = Encoding.detect(filePath, selectedEncoding)
 
             return db.runInTransaction(Callable {
                 loadBookFromReader(
-                        bookName,
-                        vrook,
-                        InputStreamReader(FileInputStream(File(filePath)), encoding.used),
-                        encoding
+                    bookName,
+                    vrook,
+                    InputStreamReader(FileInputStream(File(filePath)), encoding.used),
+                    encoding
                 )
             })
 
@@ -1686,10 +1689,10 @@ class DataRepository @Inject constructor(
 
     @Throws(IOException::class)
     private fun loadBookFromReader(
-            bookName: String,
-            vrook: VersionedRook?,
-            inReader: Reader,
-            encoding: Encoding): Long {
+        bookName: String,
+        vrook: VersionedRook?,
+        inReader: Reader,
+        encoding: Encoding): Long {
 
         val startedAt = System.currentTimeMillis()
 
@@ -1721,107 +1724,107 @@ class DataRepository @Inject constructor(
              * When multiple formats are supported, decide which parser to use here.
              */
             OrgParser.Builder()
-                    .setInput(reader)
-                    .setTodoKeywords(AppPreferences.todoKeywordsSet(context))
-                    .setDoneKeywords(AppPreferences.doneKeywordsSet(context))
-                    .setListener(object : OrgNestedSetParserListener {
-                        @Throws(IOException::class)
-                        override fun onNode(node: OrgNodeInSet) {
+                .setInput(reader)
+                .setTodoKeywords(AppPreferences.todoKeywordsSet(context))
+                .setDoneKeywords(AppPreferences.doneKeywordsSet(context))
+                .setListener(object : OrgNestedSetParserListener {
+                    @Throws(IOException::class)
+                    override fun onNode(node: OrgNodeInSet) {
 
-                            val scheduledRangeId = getOrgRangeId(node.head.scheduled)
-                            val deadlineRangeId = getOrgRangeId(node.head.deadline)
-                            val closedRangeId = getOrgRangeId(node.head.closed)
-                            val clockRangeId = getOrgRangeId(node.head.clock)
+                        val scheduledRangeId = getOrgRangeId(node.head.scheduled)
+                        val deadlineRangeId = getOrgRangeId(node.head.deadline)
+                        val closedRangeId = getOrgRangeId(node.head.closed)
+                        val clockRangeId = getOrgRangeId(node.head.clock)
 
-                            var content: String? = null
-                            var contentLineCount = 0
+                        var content: String? = null
+                        var contentLineCount = 0
 
-                            if (node.head.hasContent()) {
-                                content = node.head.content
-                                contentLineCount = MiscUtils.lineCount(node.head.content)
-                            }
+                        if (node.head.hasContent()) {
+                            content = node.head.content
+                            contentLineCount = MiscUtils.lineCount(node.head.content)
+                        }
 
-                            val position = NotePosition(
-                                    bookId = bookId,
-                                    lft = node.lft,
-                                    rgt = node.rgt,
-                                    level = node.level,
-                                    parentId = 0,
-                                    foldedUnderId = 0,
-                                    isFolded = startFolded && node.level > 0,
-                                    descendantsCount = node.descendantsCount)
+                        val position = NotePosition(
+                            bookId = bookId,
+                            lft = node.lft,
+                            rgt = node.rgt,
+                            level = node.level,
+                            parentId = 0,
+                            foldedUnderId = 0,
+                            isFolded = startFolded && node.level > 0,
+                            descendantsCount = node.descendantsCount)
 
-                            val note = Note(
-                                    0,
-                                    title = node.head.title,
-                                    priority = node.head.priority,
-                                    state = node.head.state,
-                                    scheduledRangeId = scheduledRangeId,
-                                    deadlineRangeId = deadlineRangeId,
-                                    closedRangeId = closedRangeId,
-                                    clockRangeId = clockRangeId,
-                                    tags = if (node.head.hasTags()) Note.dbSerializeTags(node.head.tags) else null,
-                                    createdAt = getCreatedAtFromProperty(node, useCreatedAtProperty, createdAtProperty),
-                                    content = content,
-                                    contentLineCount = contentLineCount,
-                                    position = position
-                            )
+                        val note = Note(
+                            0,
+                            title = node.head.title,
+                            priority = node.head.priority,
+                            state = node.head.state,
+                            scheduledRangeId = scheduledRangeId,
+                            deadlineRangeId = deadlineRangeId,
+                            closedRangeId = closedRangeId,
+                            clockRangeId = clockRangeId,
+                            tags = if (node.head.hasTags()) Note.dbSerializeTags(node.head.tags) else null,
+                            createdAt = getCreatedAtFromProperty(node, useCreatedAtProperty, createdAtProperty),
+                            content = content,
+                            contentLineCount = contentLineCount,
+                            position = position
+                        )
 
-                            val noteId = db.note().insert(note)
+                        val noteId = db.note().insert(note)
 
-                            insertNoteProperties(noteId, node.head.properties)
-                            insertNoteEvents(noteId, note.title, note.content)
+                        insertNoteProperties(noteId, node.head.properties)
+                        insertNoteEvents(noteId, note.title, note.content)
 
-                            /*
-                             * Update notes' parent IDs and insert ancestors.
-                             * Going through all descendants - nodes between lft and rgt.
-                             *
-                             *  lft:  1    2    3    4    5   6
-                             *            L2   l1   r2   R2
-                             */
-                            lft2id[node.lft] = noteId
-                            for (index in node.lft + 1 until node.rgt) {
-                                val descendantId = lft2id[index]
-                                if (descendantId != null) {
-                                    if (!notesWithParentSet.contains(descendantId)) {
-                                        db.note().updateParentForNote(descendantId, noteId)
+                        /*
+                         * Update notes' parent IDs and insert ancestors.
+                         * Going through all descendants - nodes between lft and rgt.
+                         *
+                         *  lft:  1    2    3    4    5   6
+                         *            L2   l1   r2   R2
+                         */
+                        lft2id[node.lft] = noteId
+                        for (index in node.lft + 1 until node.rgt) {
+                            val descendantId = lft2id[index]
+                            if (descendantId != null) {
+                                if (!notesWithParentSet.contains(descendantId)) {
+                                    db.note().updateParentForNote(descendantId, noteId)
 
-                                        if (startFolded && position.level > 0) {
-                                            db.note().setFoldedUnder(descendantId, noteId)
-                                        }
-
-                                        notesWithParentSet.add(descendantId)
+                                    if (startFolded && position.level > 0) {
+                                        db.note().setFoldedUnder(descendantId, noteId)
                                     }
 
-                                    db.noteAncestor().insert(NoteAncestor(
-                                            noteId = descendantId,
-                                            bookId = bookId,
-                                            ancestorNoteId = noteId))
+                                    notesWithParentSet.add(descendantId)
                                 }
+
+                                db.noteAncestor().insert(NoteAncestor(
+                                    noteId = descendantId,
+                                    bookId = bookId,
+                                    ancestorNoteId = noteId))
                             }
                         }
+                    }
 
-                        @Throws(IOException::class)
-                        override fun onFile(file: OrgFile) {
-                            val book = Book(
-                                    bookId,
-                                    bookName,
-                                    mtime = vrook?.mtime, // Set book's mtime to remote book's
-                                    preface = file.preface, // TODO: Move to and rename OrgFileSettings
-                                    isIndented = file.settings.isIndented,
-                                    title = file.settings.title,
-                                    isDummy = false,
-                                    usedEncoding = encoding.used,
-                                    detectedEncoding = encoding.detected,
-                                    selectedEncoding = encoding.selected
-                            )
+                    @Throws(IOException::class)
+                    override fun onFile(file: OrgFile) {
+                        val book = Book(
+                            bookId,
+                            bookName,
+                            mtime = vrook?.mtime, // Set book's mtime to remote book's
+                            preface = file.preface, // TODO: Move to and rename OrgFileSettings
+                            isIndented = file.settings.isIndented,
+                            title = file.settings.title,
+                            isDummy = false,
+                            usedEncoding = encoding.used,
+                            detectedEncoding = encoding.detected,
+                            selectedEncoding = encoding.selected
+                        )
 
-                            db.book().update(book)
-                        }
+                        db.book().update(book)
+                    }
 
-                    })
-                    .build()
-                    .parse()
+                })
+                .build()
+                .parse()
         }
 
         if (BuildConfig.LOG_DEBUG)
@@ -1886,7 +1889,7 @@ class DataRepository @Inject constructor(
                     val intent = Intent(AppIntent.ACTION_OPEN_BOOK)
                     intent.putExtra(AppIntent.EXTRA_BOOK_ID, bookId)
                     intent.putExtra(AppIntent.EXTRA_NOTE_ID, noteId)
-                    LocalBroadcastManager.getInstance(App.getAppContext()).sendBroadcast(intent)
+                    LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
                 }, 100)
             }
         }
@@ -1914,24 +1917,20 @@ class DataRepository @Inject constructor(
     fun exportBook(bookId: Long, format: BookFormat): File {
         /* Get book from database. */
         val book = getBook(bookId)
-                ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
+            ?: throw IOException(resources.getString(R.string.book_does_not_exist_anymore))
 
         /* Get file to write book to. */
         val file = localStorage.getExportFile(book.name, format)
 
         /* Write book. */
-        NotesOrgExporter(this).exportBook(book, file)
+        exportBook(book, file)
 
         /* Make file immediately visible when using MTP.
          * See https://github.com/orgzly/orgzly-android/issues/44
          */
-        MediaScannerConnection.scanFile(App.getAppContext(), arrayOf(file.absolutePath), null, null)
+        MediaScannerConnection.scanFile(context, arrayOf(file.absolutePath), null, null)
 
         return file
-    }
-
-    fun exportBook(book: Book, writer: Writer) {
-        NotesOrgExporter(this).exportBook(book, writer)
     }
 
     fun findNoteHavingProperty(name: String, value: String): NoteDao.NoteIdBookId? {
@@ -2084,10 +2083,10 @@ class DataRepository @Inject constructor(
 
     fun selectAllTags(): List<String> {
         return db.note().getDistinctTags()
-                .flatMap { tagsList ->
-                    Note.dbDeSerializeTags(tagsList)
-                }
-                .distinct()
+            .flatMap { tagsList ->
+                Note.dbDeSerializeTags(tagsList)
+            }
+            .distinct()
     }
 
     /**
@@ -2097,8 +2096,8 @@ class DataRepository @Inject constructor(
     @Throws(IOException::class)
     fun reParseNotesStateAndTitles(): Int {
         val parserBuilder = OrgParser.Builder()
-                .setTodoKeywords(AppPreferences.todoKeywordsSet(context))
-                .setDoneKeywords(AppPreferences.doneKeywordsSet(context))
+            .setTodoKeywords(AppPreferences.todoKeywordsSet(context))
+            .setDoneKeywords(AppPreferences.doneKeywordsSet(context))
 
         var updated = 0
 
@@ -2114,9 +2113,9 @@ class DataRepository @Inject constructor(
 
                 /* Re-parse heading using current setting of keywords. */
                 val file = parserBuilder
-                        .setInput(headString)
-                        .build()
-                        .parse()
+                    .setInput(headString)
+                    .build()
+                    .parse()
 
                 if (file.headsInList.size != 1) {
                     throw IOException("Got ${file.headsInList.size} notes after parsing \"$headString\" generated from $note")
@@ -2126,8 +2125,8 @@ class DataRepository @Inject constructor(
 
                 /* Update if state, title or priority are different. */
                 if (!TextUtils.equals(newHead.state, head.state) ||
-                        !TextUtils.equals(newHead.title, head.title) ||
-                        !TextUtils.equals(newHead.priority, head.priority)) {
+                    !TextUtils.equals(newHead.title, head.title) ||
+                    !TextUtils.equals(newHead.priority, head.priority)) {
 
                     updated += db.note().update(note.id, newHead.title, newHead.state, newHead.priority)
                 }
@@ -2155,19 +2154,19 @@ class DataRepository @Inject constructor(
         val propName = AppPreferences.createdAtProperty(context)
 
         val dbProperties = db.noteProperty().getAll()
-                .fold(mutableMapOf<Long, MutableMap<String, String>>()) { map, property ->
-                    map.getOrPut(property.noteId) {
-                        mutableMapOf()
-                    }.apply {
-                        put(property.name, property.value)
+            .fold(mutableMapOf<Long, MutableMap<String, String>>()) { map, property ->
+                map.getOrPut(property.noteId) {
+                    mutableMapOf()
+                }.apply {
+                    put(property.name, property.value)
 
-                        if (BuildConfig.LOG_DEBUG)
-                            LogUtils.d(TAG, "Property for note ${property.noteId}: "
-                                    + "${property.name} = ${property.value}")
-                    }
-
-                    map
+                    if (BuildConfig.LOG_DEBUG)
+                        LogUtils.d(TAG, "Property for note ${property.noteId}: "
+                                + "${property.name} = ${property.value}")
                 }
+
+                map
+            }
 
         // If new property is added to the note below, book has to be marked as modified.
         val bookIds = HashSet<Long>()
@@ -2232,11 +2231,11 @@ class DataRepository @Inject constructor(
     }
 
     private fun setNoteProperty(
-            note: Note,
-            createdAtPropName: String,
-            createdAt: Long,
-            currPropValue: String?,
-            bookIds: MutableSet<Long>) {
+        note: Note,
+        createdAtPropName: String,
+        createdAt: Long,
+        currPropValue: String?,
+        bookIds: MutableSet<Long>) {
 
         val value = OrgDateTime(createdAt, false).toString()
 
@@ -2260,15 +2259,15 @@ class DataRepository @Inject constructor(
 
         db.runInTransaction {
             val book = loadBookFromResource(
-                    name,
-                    BookFormat.ORG,
-                    resources,
-                    R.raw.orgzly_getting_started)
+                name,
+                BookFormat.ORG,
+                resources,
+                R.raw.orgzly_getting_started)
 
             if (book != null) {
                 setBookLastActionAndSyncStatus(book.book.id, BookAction.forNow(
-                        BookAction.Type.INFO,
-                        resources.getString(R.string.loaded_from_resource, name)))
+                    BookAction.Type.INFO,
+                    resources.getString(R.string.loaded_from_resource, name)))
             }
         }
     }
@@ -2342,5 +2341,65 @@ class DataRepository @Inject constructor(
 
     companion object {
         private val TAG = DataRepository::class.java.name
+    }
+
+
+    /**
+     * Writes content of the book from database to a specified file.
+     */
+    @Throws(IOException::class)
+    fun exportBook(book: Book, file: File) {
+        val encoding = book.usedEncoding ?: Charset.defaultCharset().name()
+
+        PrintWriter(file, encoding).use {
+            exportBook(book, it)
+        }
+    }
+
+    @Throws(IOException::class)
+    fun exportBook(book: Book, writer: Writer) {
+        val orgParserSettings = getOrgParserSettingsFromPreferences()
+        val orgWriter = OrgParserWriter(orgParserSettings)
+
+        // Write preface
+        writer.write(orgWriter.whiteSpacedFilePreface(book.preface))
+
+        // Write each note
+        getNotes(book.name).forEach { noteView ->
+            val note = noteView.note
+
+            val head = OrgMapper.toOrgHead(noteView).apply {
+                properties = OrgMapper.toOrgProperties(getNoteProperties(note.id))
+            }
+
+            writer.write(orgWriter.whiteSpacedHead(head, note.position.level, book.isIndented == true))
+        }
+    }
+
+    private fun getOrgParserSettingsFromPreferences(): OrgParserSettings {
+        val parserSettings = OrgParserSettings.getBasic()
+
+        // FIXME: Inject AppPreferences
+        when (AppPreferences.separateNotesWithNewLine(context)) {
+            context.getString(R.string.pref_value_separate_notes_with_new_line_always) ->
+                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.ALWAYS
+
+            context.getString(R.string.pref_value_separate_notes_with_new_line_multi_line_notes_only) ->
+                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.MULTI_LINE_NOTES_ONLY
+
+            context.getString(R.string.pref_value_separate_notes_with_new_line_never) ->
+                parserSettings.separateNotesWithNewLine = OrgParserSettings.SeparateNotesWithNewLine.NEVER
+        }
+
+        parserSettings.separateHeaderAndContentWithNewLine =
+            AppPreferences.separateHeaderAndContentWithNewLine(context)
+
+        parserSettings.tagsColumn = AppPreferences.tagsColumn(context)
+
+        parserSettings.orgIndentMode = AppPreferences.orgIndentMode(context)
+
+        parserSettings.orgIndentIndentationPerLevel = AppPreferences.orgIndentIndentationPerLevel(context)
+
+        return parserSettings
     }
 }

@@ -9,9 +9,11 @@ import com.orgzly.android.db.entity.NoteView
 import com.orgzly.android.ui.AppBar
 import com.orgzly.android.ui.CommonViewModel
 import com.orgzly.android.util.LogUtils
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-
-class QueryViewModel(private val dataRepository: DataRepository) : CommonViewModel() {
+@HiltViewModel
+class QueryViewModel @Inject constructor(private val dataRepository: DataRepository) : CommonViewModel() {
 
     enum class ViewState {
         LOADING,

@@ -7,6 +7,9 @@ import com.orgzly.android.prefs.AppPreferences;
 
 import org.junit.Test;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class OrgFormatterStyleTextTest extends OrgFormatterTest {
     @Test
     public void testTwoBoldNextToEachOtherWithMarks() {

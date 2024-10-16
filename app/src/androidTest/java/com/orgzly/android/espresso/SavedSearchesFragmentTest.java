@@ -39,6 +39,9 @@ import org.junit.Test;
 
 import java.io.IOException;
 
+import dagger.hilt.android.testing.HiltAndroidTest;
+
+@HiltAndroidTest
 public class SavedSearchesFragmentTest extends OrgzlyTest {
     @Before
     public void setUp() throws Exception {

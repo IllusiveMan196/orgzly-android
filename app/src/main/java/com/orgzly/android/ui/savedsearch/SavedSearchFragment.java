@@ -28,6 +28,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class SavedSearchFragment extends CommonFragment implements DrawerItem {
     private static final String TAG = SavedSearchFragment.class.getName();
 
@@ -162,8 +165,6 @@ public class SavedSearchFragment extends CommonFragment implements DrawerItem {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
-        App.appComponent.inject(this);
 
         /* This makes sure that the container activity has implemented
          * the callback interface. If not, it throws an exception

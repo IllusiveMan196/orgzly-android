@@ -14,15 +14,15 @@ import com.orgzly.android.usecase.NoteUpdateStateDone
 import com.orgzly.android.usecase.UseCaseRunner.run
 import com.orgzly.android.util.LogUtils.d
 import com.orgzly.android.util.async
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class NotificationBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var remindersScheduler: RemindersScheduler
 
     override fun onReceive(context: Context, intent: Intent) {
-        App.appComponent.inject(this)
-
         if (BuildConfig.LOG_DEBUG) d(TAG, intent, intent.extras)
 
         async {

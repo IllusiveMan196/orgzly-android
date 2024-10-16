@@ -76,7 +76,7 @@ class NoteViewModel(
             }
 
             notePayload = if (isNew()) {
-                NoteBuilder.newPayload(App.getAppContext(), title.orEmpty(), content)
+                NoteBuilder.newPayload(App.appContext, title.orEmpty(), content)
             } else {
                 dataRepository.getNotePayload(noteId)
             }
@@ -148,7 +148,7 @@ class NoteViewModel(
 
     fun updatePayloadState(state: String?) {
         notePayload?.let {
-            notePayload = NoteBuilder.changeState(App.getAppContext(), it, state)
+            notePayload = NoteBuilder.changeState(App.appContext, it, state)
         }
     }
 
@@ -251,7 +251,7 @@ class NoteViewModel(
     }
 
     fun followNoteBreadcrumb(ancestor: Note) {
-        when (AppPreferences.breadcrumbsTarget(App.getAppContext())) {
+        when (AppPreferences.breadcrumbsTarget(App.appContext)) {
             "note_details" ->
                 MainActivity.openSpecificNote(bookId, ancestor.id)
 

@@ -1,15 +1,18 @@
 package com.orgzly.android.repos;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import com.orgzly.BuildConfig;
 import com.orgzly.android.OrgzlyTest;
 
 import org.junit.Assume;
 import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import dagger.hilt.android.testing.HiltAndroidTest;
 
+@HiltAndroidTest
 public class RepoFactoryTest extends OrgzlyTest {
 
     @Test

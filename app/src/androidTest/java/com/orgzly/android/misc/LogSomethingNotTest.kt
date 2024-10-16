@@ -3,8 +3,10 @@ package com.orgzly.android.misc
 import android.os.Environment
 import android.util.Log
 import com.orgzly.android.OrgzlyTest
+import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Test
 
+@HiltAndroidTest
 class LogSomethingNotTest : OrgzlyTest() {
     @Test
     fun testLink() {

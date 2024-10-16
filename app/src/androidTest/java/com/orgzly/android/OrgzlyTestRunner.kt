@@ -3,14 +3,15 @@ package com.orgzly.android
 import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
+import dagger.hilt.android.testing.HiltTestApplication
 
 class OrgzlyTestRunner : AndroidJUnitRunner() {
 
-    /**
-     * Uses [AppUnderTest] instead of [App].
-     */
     @Throws(InstantiationException::class, IllegalAccessException::class, ClassNotFoundException::class)
     override fun newApplication(cl: ClassLoader, className: String, context: Context): Application {
-        return super.newApplication(cl, AppUnderTest::class.java.name, context)
+        // TODO: Get rid of this
+        App.appContext = context
+
+        return super.newApplication(cl, HiltTestApplication::class.java.name, context)
     }
 }

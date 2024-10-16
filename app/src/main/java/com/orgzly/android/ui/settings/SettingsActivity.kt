@@ -9,7 +9,9 @@ import com.orgzly.android.ui.settings.SettingsFragment.Listener
 import com.orgzly.android.ui.showSnackbar
 import com.orgzly.android.usecase.*
 import com.orgzly.databinding.ActivitySettingsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SettingsActivity : CommonActivity(), Listener {
     private lateinit var binding: ActivitySettingsBinding
 
@@ -68,8 +70,6 @@ class SettingsActivity : CommonActivity(), Listener {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        App.appComponent.inject(this)
-
         super.onCreate(savedInstanceState)
 
         binding = ActivitySettingsBinding.inflate(layoutInflater)

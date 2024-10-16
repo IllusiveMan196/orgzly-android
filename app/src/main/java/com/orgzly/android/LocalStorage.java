@@ -15,17 +15,24 @@ import com.orgzly.android.util.LogUtils;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+import dagger.hilt.android.qualifiers.ApplicationContext;
+
 
 /**
  * Provides directories for various different types of files that needs to be stored locally.
  * Prefers cache directories for temporary files, external storage for large files etc.
  */
+@Singleton
 public class LocalStorage {
     private static final String TAG = LocalStorage.class.getName();
 
-    private Context mContext;
+    private final Context mContext;
 
-    public LocalStorage(Context context) {
+    @Inject
+    public LocalStorage(@ApplicationContext Context context) {
         mContext = context;
     }
 

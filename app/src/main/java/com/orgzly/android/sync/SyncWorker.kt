@@ -1,6 +1,8 @@
 package com.orgzly.android.sync
 
 import android.content.Context
+import androidx.hilt.work.HiltWorker
+import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
@@ -18,20 +20,27 @@ import com.orgzly.android.ui.util.haveNetworkConnection
 import com.orgzly.android.util.AppPermissions
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.widgets.ListWidgetProvider
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.util.concurrent.CancellationException
 import javax.inject.Inject
 
-class SyncWorker(val context: Context, val params: WorkerParameters) :
-    CoroutineWorker(context, params) {
-
-    @Inject
-    lateinit var dataRepository: DataRepository
+@HiltWorker
+class SyncWorker @AssistedInject constructor(
+    @Assisted val context: Context,
+    @Assisted val params: WorkerParameters,
+    val dataRepository: DataRepository,
+    val sharingShortcutsManager: SharingShortcutsManager
+) : CoroutineWorker(context, params) {
 
     override suspend fun doWork(): Result {
-        App.appComponent.inject(this)
-
         val state = try {
             tryDoWork()
 
@@ -86,9 +95,9 @@ class SyncWorker(val context: Context, val params: WorkerParameters) :
 
         syncRepos()?.let { return it }
 
-        RemindersScheduler.notifyDataSetChanged(App.getAppContext())
-        ListWidgetProvider.notifyDataSetChanged(App.getAppContext())
-        SharingShortcutsManager().replaceDynamicShortcuts(App.getAppContext())
+        RemindersScheduler.notifyDataSetChanged(context)
+        ListWidgetProvider.notifyDataSetChanged(context)
+        sharingShortcutsManager.replaceDynamicShortcuts(context)
 
         // Save last successful sync time to preferences
         val time = System.currentTimeMillis()
