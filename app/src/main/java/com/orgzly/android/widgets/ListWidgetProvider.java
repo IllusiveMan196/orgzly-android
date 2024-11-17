@@ -293,6 +293,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);
 
         if (AppIntent.ACTION_UPDATE_LIST_WIDGET.equals(intent.getAction())) {
@@ -314,8 +316,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
                     break;
             }
 
-        } else {
-            super.onReceive(context, intent);
         }
     }
 }
