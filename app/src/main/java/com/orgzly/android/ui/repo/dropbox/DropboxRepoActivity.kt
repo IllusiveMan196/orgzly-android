@@ -259,14 +259,10 @@ class DropboxRepoActivity : CommonActivity() {
             }
 
         binding.activityRepoDropboxIcon.let { icon ->
-            icon.setImageResource(R.drawable.cic_dropbox)
-
-            // Tint the icon blue if linked
             if (isDropboxLinked()) {
-                ImageViewCompat.setImageTintList(
-                    icon,
-                    ContextCompat.getColorStateList(this, R.color.dropbox_blue)
-                )
+                icon.setImageResource(R.drawable.cic_dropbox_blue)
+            } else {
+                icon.setImageResource(R.drawable.cic_dropbox)
             }
         }
     }
