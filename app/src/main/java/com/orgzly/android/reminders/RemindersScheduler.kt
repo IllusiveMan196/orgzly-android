@@ -51,7 +51,7 @@ class RemindersScheduler @Inject constructor(
     fun cancelAll() {
         context.getAlarmManager().cancel(reminderTriggeredIntent())
 
-        if (LogMajorEvents.isEnabled()) {
+        if (LogMajorEvents.isEnabled(context)) {
             logs.log(LogMajorEvents.REMINDERS, "Canceled all reminders")
         }
     }
@@ -127,7 +127,7 @@ class RemindersScheduler @Inject constructor(
     }
 
     private fun logScheduled(method: String, origin: String, inMs: Long) {
-        if (LogMajorEvents.isEnabled()) {
+        if (LogMajorEvents.isEnabled(context)) {
             val now = System.currentTimeMillis()
             logs.log(
                 LogMajorEvents.REMINDERS,

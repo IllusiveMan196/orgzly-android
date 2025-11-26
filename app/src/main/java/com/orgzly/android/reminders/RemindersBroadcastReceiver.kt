@@ -69,7 +69,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
     private fun anyRemindersEnabled(context: Context, intent: Intent): Boolean {
         return if (AppPreferences.remindersForScheduledEnabled(context)) {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(
                     LogMajorEvents.REMINDERS,
                     "Intent accepted - scheduled time reminder is enabled: $intent"
@@ -77,7 +77,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             }
             true
         } else if (AppPreferences.remindersForDeadlineEnabled(context)) {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(
                     LogMajorEvents.REMINDERS,
                     "Intent accepted - deadline time reminder is enabled: $intent"
@@ -85,7 +85,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             }
             true
         } else if (AppPreferences.remindersForEventsEnabled(context)) {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(
                     LogMajorEvents.REMINDERS,
                     "Intent accepted - events reminder is enabled: $intent"
@@ -93,7 +93,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             }
             true
         } else {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(
                     LogMajorEvents.REMINDERS,
                     "Intent ignored - all reminders are disabled: $intent"
@@ -117,7 +117,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 // TODO: Show less, show summary
                 val lastNotes = notes.takeLast(20)
 
-                if (LogMajorEvents.isEnabled()) {
+                if (LogMajorEvents.isEnabled(context)) {
                     appLogs.log(
                         LogMajorEvents.REMINDERS,
                         "Since last run: Found ${notes.size} notes (showing ${lastNotes.size}) between $lastRun and $now")
@@ -126,7 +126,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 RemindersNotifications.showNotifications(context, lastNotes, appLogs)
 
             } else {
-                if (LogMajorEvents.isEnabled()) {
+                if (LogMajorEvents.isEnabled(context)) {
                     appLogs.log(
                         LogMajorEvents.REMINDERS,
                         "Since last run: No notes found between $lastRun and $now")
@@ -134,7 +134,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             }
 
         } else {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(LogMajorEvents.REMINDERS, "Since last run: No previous run")
             }
         }
@@ -162,7 +162,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
                 inMs = 1
             }
 
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 val inS = inMs.userFriendlyPeriod()
                 appLogs.log(
                     LogMajorEvents.REMINDERS,
@@ -173,7 +173,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
             remindersScheduler.scheduleReminder(inMs, hasTime)
 
         } else {
-            if (LogMajorEvents.isEnabled()) {
+            if (LogMajorEvents.isEnabled(context)) {
                 appLogs.log(
                     LogMajorEvents.REMINDERS, "Next: No notes found from $now"
                 )

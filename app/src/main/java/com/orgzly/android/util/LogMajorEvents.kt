@@ -1,6 +1,6 @@
 package com.orgzly.android.util
 
-import com.orgzly.android.App
+import android.content.Context
 import com.orgzly.android.prefs.AppPreferences
 
 class LogMajorEvents {
@@ -8,8 +8,8 @@ class LogMajorEvents {
 
         const val REMINDERS = "reminders"
 
-        fun isEnabled(): Boolean {
-            return AppPreferences.logMajorEvents(App.appContext)
+        fun isEnabled(context: Context): Boolean {
+            return AppPreferences.logMajorEvents(context)
         }
     }
 
