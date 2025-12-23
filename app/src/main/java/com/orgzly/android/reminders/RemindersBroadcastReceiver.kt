@@ -13,25 +13,46 @@ import com.orgzly.android.util.LogMajorEvents
 import com.orgzly.android.util.LogUtils
 import com.orgzly.android.util.async
 import com.orgzly.org.datetime.OrgDateTime
-import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.EarlyEntryPoint
+import dagger.hilt.android.EarlyEntryPoints
+import dagger.hilt.components.SingletonComponent
 import org.joda.time.DateTime
-import javax.inject.Inject
 
-@AndroidEntryPoint
+// Using EarlyEntryPoint instead, for tests due to BOOT_COMPLETED usage
+// https://github.com/google/dagger/issues/4903
+// @AndroidEntryPoint
 class RemindersBroadcastReceiver : BroadcastReceiver() {
-    @Inject
+
+    @EarlyEntryPoint
+    @InstallIn(SingletonComponent::class)
+    interface EntryPoint {
+        fun dataRepository(): DataRepository
+        fun appLogs(): AppLogsRepository
+        fun remindersScheduler(): RemindersScheduler
+    }
+
+    // @Inject
     lateinit var dataRepository: DataRepository
 
-    @Inject
+    // @Inject
     lateinit var appLogs: AppLogsRepository
 
-    @Inject
+    // @Inject
     lateinit var remindersScheduler: RemindersScheduler
 
+
     override fun onReceive(context: Context, intent: Intent) {
+        EarlyEntryPoints.get(context, EntryPoint::class.java).apply {
+            dataRepository = dataRepository()
+            appLogs = appLogs()
+            remindersScheduler = remindersScheduler()
+        }
+
         if (!anyRemindersEnabled(context, intent)) {
             return
         }
+
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent)
 
