@@ -1,6 +1,7 @@
 package com.orgzly.android
 
 import android.content.Context
+import android.util.Log
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
 import androidx.core.graphics.drawable.IconCompat
@@ -20,17 +21,22 @@ class SharingShortcutsManager @Inject constructor(
 
     fun replaceDynamicShortcuts(context: Context) {
         App.EXECUTORS.diskIO().execute {
-            val t1 = System.currentTimeMillis()
+            try {
+                val t1 = System.currentTimeMillis()
 
-            val shortcuts = createShortcuts(context)
-                .take(ShortcutManagerCompat.getMaxShortcutCountPerActivity(context))
+                val shortcuts = createShortcuts(context)
+                    .take(ShortcutManagerCompat.getMaxShortcutCountPerActivity(context))
 
-            ShortcutManagerCompat.removeAllDynamicShortcuts(context)
-            ShortcutManagerCompat.addDynamicShortcuts(context, shortcuts)
+                ShortcutManagerCompat.removeAllDynamicShortcuts(context)
+                ShortcutManagerCompat.addDynamicShortcuts(context, shortcuts)
 
-            if (BuildConfig.LOG_DEBUG) {
-                val t2 = System.currentTimeMillis()
-                LogUtils.d(TAG, "Published ${shortcuts.size} shortcuts in ${t2 - t1}ms")
+                if (BuildConfig.LOG_DEBUG) {
+                    val t2 = System.currentTimeMillis()
+                    LogUtils.d(TAG, "Published ${shortcuts.size} shortcuts in ${t2 - t1}ms")
+                }
+            } catch (e: Exception) {
+                // Database may be closed during test teardown or app shutdown                                                                                                │
+                Log.w(TAG, "Failed to update shortcuts: ${e.message}")
             }
         }
     }
