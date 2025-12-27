@@ -19,7 +19,9 @@ import static org.hamcrest.CoreMatchers.anyOf;
 import static org.hamcrest.CoreMatchers.endsWith;
 import static org.hamcrest.Matchers.anything;
 
+import android.app.Activity;
 import android.content.res.Resources;
+import android.os.SystemClock;
 import android.text.Spanned;
 import android.text.style.ClickableSpan;
 import android.view.KeyEvent;
@@ -30,6 +32,7 @@ import android.widget.TextView;
 
 import androidx.annotation.IdRes;
 import androidx.appcompat.widget.Toolbar;
+import androidx.test.core.app.ActivityScenario;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.DataInteraction;
 import androidx.test.espresso.UiController;
@@ -368,6 +371,15 @@ public class EspressoUtils {
                 uiController.loopMainThreadForAtLeast(KEYBOARD_DISMISSAL_DELAY_MILLIS);
             }
         };
+    }
+
+    /**
+     * Change screen orientation and wait for view hierarchy to stabilize.
+     * Prevents RootViewWithoutFocusException in subsequent Espresso actions.
+     */
+    public static <A extends Activity> void setScreenOrientation(ActivityScenario<A> scenario, int orientation) {
+        scenario.onActivity(activity -> activity.setRequestedOrientation(orientation));
+        SystemClock.sleep(500);
     }
 
     /**

@@ -30,14 +30,17 @@ import com.orgzly.android.util.LogUtils;
 import java.util.Calendar;
 import java.util.Collections;
 
-import javax.inject.Inject;
-
-import dagger.hilt.android.AndroidEntryPoint;
+import dagger.hilt.InstallIn;
+import dagger.hilt.android.EarlyEntryPoint;
+import dagger.hilt.android.EarlyEntryPoints;
+import dagger.hilt.components.SingletonComponent;
 
 /**
  * The AppWidgetProvider for the list widget
  */
-@AndroidEntryPoint
+// Using EarlyEntryPoint instead, for tests
+// https://github.com/google/dagger/issues/4903
+// @AndroidEntryPoint
 public class ListWidgetProvider extends AppWidgetProvider {
     private static final String TAG = ListWidgetProvider.class.getName();
 
@@ -46,7 +49,13 @@ public class ListWidgetProvider extends AppWidgetProvider {
     public static final int OPEN_CLICK_TYPE = 1;
     public static final int DONE_CLICK_TYPE = 2;
 
-    @Inject
+    @EarlyEntryPoint
+    @InstallIn(SingletonComponent.class)
+    interface EntryPoint {
+        DataRepository dataRepository();
+    }
+
+    // @Inject
     DataRepository dataRepository;
 
     public static void notifyDataSetChanged(Context context) {
@@ -293,6 +302,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
+        dataRepository = EarlyEntryPoints.get(context, EntryPoint.class).dataRepository();
+
         super.onReceive(context, intent);
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, intent);

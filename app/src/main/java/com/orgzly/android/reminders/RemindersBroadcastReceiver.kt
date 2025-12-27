@@ -19,7 +19,7 @@ import dagger.hilt.android.EarlyEntryPoints
 import dagger.hilt.components.SingletonComponent
 import org.joda.time.DateTime
 
-// Using EarlyEntryPoint instead, for tests due to BOOT_COMPLETED usage
+// Using EarlyEntryPoint instead, for tests
 // https://github.com/google/dagger/issues/4903
 // @AndroidEntryPoint
 class RemindersBroadcastReceiver : BroadcastReceiver() {

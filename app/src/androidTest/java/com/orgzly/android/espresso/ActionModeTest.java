@@ -23,6 +23,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInSearch;
+import static com.orgzly.android.espresso.util.EspressoUtils.setScreenOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 
@@ -78,13 +79,11 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotation() {
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onNoteInBook(3).perform(longClick());
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onView(withId(R.id.toggle_state)).check(matches(isDisplayed()));
 
@@ -93,21 +92,18 @@ public class ActionModeTest extends OrgzlyTest {
 
     @Test
     public void testCabStaysOpenOnRotationInQueryFragment() {
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onView(withId(R.id.drawer_layout)).perform(open());
         onView(withText("Scheduled")).perform(click());
 
         onNoteInSearch(1).perform(longClick());
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         // TODO: Check *the same* note is selected.
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onView(withId(R.id.toggle_state)).check(matches(isDisplayed()));
     }

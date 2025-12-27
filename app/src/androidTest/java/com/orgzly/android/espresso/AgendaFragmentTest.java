@@ -15,6 +15,7 @@ import static com.orgzly.android.espresso.util.EspressoUtils.onItemInAgenda;
 import static com.orgzly.android.espresso.util.EspressoUtils.onNotesInAgenda;
 import static com.orgzly.android.espresso.util.EspressoUtils.recyclerViewItemCount;
 import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
+import static com.orgzly.android.espresso.util.EspressoUtils.setScreenOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -166,8 +167,7 @@ public class AgendaFragmentTest extends OrgzlyTest {
         searchForText(".it.done ad.7");
         onNotesInAgenda().check(matches(recyclerViewItemCount(25)));
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onNotesInAgenda().check(matches(recyclerViewItemCount(25)));
     }

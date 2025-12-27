@@ -20,6 +20,7 @@ import static com.orgzly.android.espresso.util.EspressoUtils.onActionItemClick;
 import static com.orgzly.android.espresso.util.EspressoUtils.onNoteInBook;
 import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.util.EspressoUtils.scroll;
+import static com.orgzly.android.espresso.util.EspressoUtils.setScreenOrientation;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.equalTo;
@@ -179,13 +180,11 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testScrollPositionKeptOnRotation() {
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onNoteInBook(40).check(matches(isDisplayed())); // Scroll to note
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onView(withText("Note #40.")).check(matches(isDisplayed()));
     }
@@ -267,8 +266,7 @@ public class BookTest extends OrgzlyTest {
 
     @Test
     public void testActionModeMovingStaysOpenAfterRotation() {
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onView(withId(R.id.notes_action_move_down)).check(doesNotExist());
 
@@ -277,8 +275,7 @@ public class BookTest extends OrgzlyTest {
         onActionItemClick(R.id.move, R.string.move);
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onView(withId(R.id.notes_action_move_down)).check(matches(isDisplayed()));
     }
@@ -422,10 +419,8 @@ public class BookTest extends OrgzlyTest {
         onView(withId(R.id.delete)).check(doesNotExist());
 
         // Rotate
-        scenario.onActivity(activity -> {
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-            activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        });
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         pressBack(); // Leave note
     }

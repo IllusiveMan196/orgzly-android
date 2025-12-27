@@ -60,16 +60,12 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         onView(withId(R.id.location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
 
         onView(withId(R.id.location_button))
                 .check(matches(withText(context.getString(R.string.default_share_notebook))))
@@ -86,17 +82,13 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         onView(withId(R.id.location_button)).perform(scroll(), click())
         onView(withText("book-two")).perform(click())
         onView(withId(R.id.location_button)).check(matches(withText("book-two")))
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
 
         onView(withId(R.id.location_button)).check(matches(withText("book-two")))
     }
@@ -129,10 +121,8 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         onView(withId(R.id.done)).perform(click()); // Note done
     }
@@ -184,18 +174,14 @@ class ShareActivityTest : OrgzlyTest() {
                 type = "text/plain",
                 extraText = "This is some shared text")
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
 
         onView(withId(R.id.scheduled_button)).check(matches(withText("")))
         onView(withId(R.id.scheduled_button)).perform(click())
         onView(withText(R.string.set)).perform(click())
         onView(withId(R.id.scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
 
-        scenario.onActivity { activity ->
-            activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        }
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
 
         onView(withId(R.id.scheduled_button)).check(matches(withText(startsWith(defaultDialogUserDate()))))
     }

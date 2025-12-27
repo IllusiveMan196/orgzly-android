@@ -27,6 +27,7 @@ import static com.orgzly.android.espresso.util.EspressoUtils.onSavedSearch;
 import static com.orgzly.android.espresso.util.EspressoUtils.replaceTextCloseKeyboard;
 import static com.orgzly.android.espresso.util.EspressoUtils.scroll;
 import static com.orgzly.android.espresso.util.EspressoUtils.searchForText;
+import static com.orgzly.android.espresso.util.EspressoUtils.setScreenOrientation;
 import static com.orgzly.android.espresso.util.EspressoUtils.settingsSetDoneKeywords;
 import static com.orgzly.android.espresso.util.EspressoUtils.settingsSetTodoKeywords;
 import static org.hamcrest.Matchers.allOf;
@@ -233,14 +234,12 @@ public class MiscTest extends OrgzlyTest {
     public void testNewBookDialogShouldSurviveScreenRotation() {
         ActivityScenario<MainActivity> scenario = ActivityScenario.launch(MainActivity.class);
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 
         onView(withId(R.id.fab)).perform(click());
         onView(withId(R.id.dialog_new_book_container)).check(matches(isDisplayed()));
 
-        scenario.onActivity(activity ->
-                activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT));
+        setScreenOrientation(scenario, ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         onView(withId(R.id.dialog_new_book_container)).check(matches(isDisplayed()));
         onView(withId(R.id.dialog_input)).perform(replaceTextCloseKeyboard("notebook"));
