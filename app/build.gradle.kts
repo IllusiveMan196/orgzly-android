@@ -67,7 +67,6 @@ android {
 
         buildConfigField("String", "DROPBOX_APP_KEY", getAppProperty("dropbox.app_key", "\"\""))
         resValue("string", "dropbox_app_key_schema", getAppProperty("dropbox.app_key_schema", ""))
-
     }
 
     buildFeatures {
@@ -81,10 +80,17 @@ android {
 
     buildTypes {
         release {
-            isShrinkResources = true
+            // Enables code-related app optimization
             isMinifyEnabled = true
 
-            proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+            // Enables resource shrinking
+            isShrinkResources = true
+
+            proguardFiles(
+                // Default file with automatically generated optimization rules
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
 
             buildConfigField("boolean", "LOG_DEBUG", "false")
 
