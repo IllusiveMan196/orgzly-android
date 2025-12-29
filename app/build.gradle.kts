@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 /**
@@ -45,14 +46,14 @@ plugins {
 android {
     namespace = "com.orgzly"
 
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
-        // Android 5.0 (Lollipop)
-        minSdk = 21
+        // Android 6.0 (Marshmallow)
+        minSdk = 23
 
-        // Android 14
-        targetSdk = 34
+        // Android 16
+        targetSdk = 36
 
         applicationId = "com.orgzly"
 
@@ -67,9 +68,6 @@ android {
         buildConfigField("String", "DROPBOX_APP_KEY", getAppProperty("dropbox.app_key", "\"\""))
         resValue("string", "dropbox_app_key_schema", getAppProperty("dropbox.app_key_schema", ""))
 
-        ksp {
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
     }
 
     buildFeatures {
@@ -129,8 +127,10 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
+    kotlin {
+        compilerOptions {
+            jvmTarget = JvmTarget.JVM_17
+        }
     }
 
     packaging {
@@ -210,6 +210,7 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.dropbox.core.sdk)
+    implementation(libs.dropbox.android.sdk)
 
     implementation(libs.juniversalchardet)
 

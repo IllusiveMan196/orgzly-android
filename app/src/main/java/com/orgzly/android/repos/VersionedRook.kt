@@ -5,8 +5,8 @@ import android.net.Uri
 class VersionedRook(
         repoId: Long,
         repoType: RepoType,
-        repoUri: Uri,
-        uri: Uri,
+        repoUri: Uri?,
+        uri: Uri?,
         val revision: String,
         val mtime: Long
 ) : Rook(repoId, repoType, repoUri, uri) {
