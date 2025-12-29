@@ -194,6 +194,12 @@ abstract class CommonActivity : AppCompatActivity() {
         whatsNewDialog = WhatsNewDialog.create(this).apply {
             setOnDismissListener {
                 whatsNewDialog = null
+
+                if (!AppPreferences.isPostNotificationsPermissionRequestOffered(this@CommonActivity)
+                    && !AppPermissions.isGranted(this@CommonActivity, AppPermissions.Usage.POST_NOTIFICATIONS)) {
+                    AppPermissions.isGrantedOrRequest(this@CommonActivity, AppPermissions.Usage.POST_NOTIFICATIONS);
+                    AppPreferences.isPostNotificationsPermissionRequestOffered(this@CommonActivity, true);
+                }
             }
 
             show()

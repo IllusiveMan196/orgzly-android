@@ -987,6 +987,20 @@ public class AppPreferences {
     }
 
     /*
+     * Request for POST_NOTIFICATION offered to the user.
+     */
+
+    public static boolean isPostNotificationsPermissionRequestOffered(Context context) {
+        String key = context.getResources().getString(R.string.pref_key_is_post_notifications_permission_request_offered);
+        return getStateSharedPreferences(context).getBoolean(key, false);
+    }
+
+    public static void isPostNotificationsPermissionRequestOffered(Context context, boolean value) {
+        String key = context.getResources().getString(R.string.pref_key_is_post_notifications_permission_request_offered);
+        getStateSharedPreferences(context).edit().putBoolean(key, value).apply();
+    }
+
+    /*
      * Last sync.
      */
 

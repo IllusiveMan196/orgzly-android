@@ -56,6 +56,13 @@ object AppPermissions {
             return true
         }
 
+        // POST_NOTIFICATIONS is used since API 33
+        if (permission == Manifest.permission.POST_NOTIFICATIONS && Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            if (BuildConfig.LOG_DEBUG)
+                LogUtils.d(TAG, requestCode, permission, "API " + Build.VERSION.SDK_INT + ", returning true")
+            return true;
+        }
+
         val isGranted = ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED
 
         if (BuildConfig.LOG_DEBUG) LogUtils.d(TAG, requestCode, permission, isGranted)
@@ -71,6 +78,7 @@ object AppPermissions {
             Usage.SYNC_START -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.SAVED_SEARCHES_EXPORT_IMPORT -> Manifest.permission.WRITE_EXTERNAL_STORAGE
             Usage.EXTERNAL_FILES_ACCESS -> Manifest.permission.READ_EXTERNAL_STORAGE
+            Usage.POST_NOTIFICATIONS -> Manifest.permission.POST_NOTIFICATIONS
         }
     }
 
@@ -82,6 +90,7 @@ object AppPermissions {
             Usage.SYNC_START -> R.string.permissions_rationale_for_sync_start
             Usage.SAVED_SEARCHES_EXPORT_IMPORT -> R.string.storage_permissions_missing
             Usage.EXTERNAL_FILES_ACCESS -> R.string.permissions_rationale_for_external_files_access
+            Usage.POST_NOTIFICATIONS -> R.string.permissions_rationale_for_post_notifications
         }
     }
 
@@ -90,6 +99,7 @@ object AppPermissions {
         BOOK_EXPORT,
         SYNC_START,
         SAVED_SEARCHES_EXPORT_IMPORT,
-        EXTERNAL_FILES_ACCESS
+        EXTERNAL_FILES_ACCESS,
+        POST_NOTIFICATIONS
     }
 }

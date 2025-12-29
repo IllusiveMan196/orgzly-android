@@ -585,6 +585,7 @@
     <!-- State-type preferences, not changeable by user. They have no defaults. -->
     <string name="pref_key_dropbox_token" translatable="false">pref_key_dropbox_token</string>
     <string name="pref_key_is_getting_started_notebook_loaded" translatable="false">pref_key_is_getting_started_notebook_loaded</string>
+    <string name="pref_key_is_post_notifications_permission_request_offered" translatable="false">pref_key_is_post_notifications_permission_request_offered</string>
     <string name="pref_key_last_used_version_code" translatable="false">pref_key_last_used_version_code</string>
     <string name="pref_key_last_successful_sync_time" translatable="false">pref_key_last_successful_sync_time</string>
     <string name="pref_key_reminder_service_last_run_for_scheduled" translatable="false">pref_key_reminder_service_last_run_for_scheduled</string>
