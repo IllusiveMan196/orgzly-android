@@ -113,6 +113,8 @@ android {
             buildConfigField("String", "VERSION_NAME_SUFFIX", "\"\"")
 
             dimension = "store"
+
+            isDefault = true
         }
 
         create("fdroid") {
