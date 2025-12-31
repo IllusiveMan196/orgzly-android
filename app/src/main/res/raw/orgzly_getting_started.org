@@ -10,6 +10,8 @@ You can select multiple notes.
 
 Fling the note left to open a different menu.
 
+You can customize the menu's buttons in Settings.
+
 ** Fold a note which contains sub-notes by clicking the icon next to it
 
 Long-click the icon to unfold the entire subtree.
@@ -64,6 +66,20 @@ Dial a phone number (tel:555-0199), send SMS (sms:555-0199), compose email (mail
 You can also link to another note or notebook within the app.
 
 See [[https://www.orgzly.com/docs#links]] for more information.
+
+*** Internal links are also supported
+
+Link to target with ID property:
+- id:C4B2A061-ED7C-4AF1-8CF1-97ACDD0EE4D7
+
+Same target, with a link description:
+- [[id:C4B2A061-ED7C-4AF1-8CF1-97ACDD0EE4D7][Target has an ID property set]]
+
+**** Target has an ID property set
+:PROPERTIES:
+:CREATED:  [2025-12-31 Wed 08:40]
+:ID:       C4B2A061-ED7C-4AF1-8CF1-97ACDD0EE4D7
+:END:
 
 ** Basic typographical emphasis is supported
 
