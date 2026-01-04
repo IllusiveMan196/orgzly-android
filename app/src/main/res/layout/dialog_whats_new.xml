@@ -22,6 +22,36 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.11-beta.1"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Under-the-hood maintenance and Dropbox compatibility update" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Highlight note when its popup menu is opened" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Global sync progress bar" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Customizable quick actions" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Initial clocking support" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Support for org-protocol links (org-id-goto, org-search)" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.10"
             tools:ignore="HardcodedText" />
 
