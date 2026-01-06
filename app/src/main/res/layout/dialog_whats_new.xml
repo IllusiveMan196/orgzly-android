@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:padding="@dimen/screen_edge"
+    android:padding="24dp"
     android:scrollbarStyle="outsideOverlay">
 
     <LinearLayout
@@ -18,6 +18,19 @@
             android:id="@+id/dialog_whats_new_intro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.8.11-beta.2"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Set padding for drawer to handle window insets" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix widget saved search reverting" />
 
 
         <TextView

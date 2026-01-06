@@ -3,9 +3,7 @@
     <string name="whats_new_title">What\'s New</string>
 
     <string name="whats_new_intro"><![CDATA[
-        Visit
-        <a href="https://www.orgzly.com">Orgzly.com</a>
-        for documentation.
+        Visit <a href="https://www.orgzly.com">Orgzly.com</a>.
 
         <br><br>
 
@@ -15,9 +13,8 @@
 
         <br><br>
 
-        Help us
-        <a href="https://crowdin.com/project/orgzly">translate</a>
-        the app on Crowdin.
+        Help us translate the app on
+        <a href="https://crowdin.com/project/orgzly">Crowdin</a>.
     ]]></string>
 
     <string name="whats_new_outro"><![CDATA[
