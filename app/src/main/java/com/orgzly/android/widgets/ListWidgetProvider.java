@@ -250,7 +250,6 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         updateAppWidgetLayout(context, appWidgetManager, appWidgetId);
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetId, R.id.list_widget_list_view);
     }
 
     private SavedSearch getSavedSearch(Context context, int appWidgetId) {
@@ -274,7 +273,7 @@ public class ListWidgetProvider extends AppWidgetProvider {
     private void setFilter(Context context, int appWidgetId, long id) {
         SharedPreferences.Editor editor = context.getSharedPreferences(PREFERENCES_ID, Context.MODE_PRIVATE).edit();
         editor.putLong(getFilterPreferenceKey(appWidgetId), id);
-        editor.apply();
+        editor.commit();
     }
 
     private String getFilterPreferenceKey(int appWidgetId) {
