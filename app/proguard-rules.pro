@@ -52,3 +52,10 @@
 -dontwarn org.slf4j.**
 
 -keepclassmembers enum com.orgzly.android.ui.refile.RefileLocation$Type { *; }
+
+# Gson serialization for NotesClipboard
+-keep class com.orgzly.android.db.NotesClipboard { *; }
+-keep class com.orgzly.android.db.NotesClipboard$Entry { *; }
+-keep class com.orgzly.android.db.entity.Note { *; }
+-keep class com.orgzly.android.db.entity.NotePosition { *; }
+-keep class com.orgzly.android.db.entity.NoteProperty { *; }
