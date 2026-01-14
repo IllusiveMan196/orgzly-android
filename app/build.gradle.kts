@@ -58,8 +58,8 @@ android {
 
         applicationId = "com.orgzly"
 
-        versionCode = 176
-        versionName = "1.8.11-beta.2"
+        versionCode = 179
+        versionName = "1.8.11-beta.3"
 
         testInstrumentationRunner = "com.orgzly.android.OrgzlyTestRunner"
         // testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
