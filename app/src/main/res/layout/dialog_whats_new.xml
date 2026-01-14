@@ -19,6 +19,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
+        <TextView
+            style="@style/WhatsNewVersion"
+            android:text="v1.8.11-beta.3"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix crash when pasting previously cut notes" />
+
+
         <TextView
             style="@style/WhatsNewVersion"
             android:text="v1.8.11-beta.2"
