@@ -22,6 +22,16 @@
 
         <TextView
             style="@style/WhatsNewVersion"
+            android:text="v1.8.11-beta.4"
+            tools:ignore="HardcodedText" />
+
+        <com.orgzly.android.ui.views.WhatsNewChange
+            style="@style/WhatsNewChange"
+            app:text="Fix crash on widget interaction on some launchers" />
+
+
+        <TextView
+            style="@style/WhatsNewVersion"
             android:text="v1.8.11-beta.3"
             tools:ignore="HardcodedText" />
 
