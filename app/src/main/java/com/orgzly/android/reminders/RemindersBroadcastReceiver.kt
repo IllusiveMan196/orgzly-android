@@ -43,7 +43,7 @@ class RemindersBroadcastReceiver : BroadcastReceiver() {
 
 
     override fun onReceive(context: Context, intent: Intent) {
-        EarlyEntryPoints.get(context, EntryPoint::class.java).apply {
+        EarlyEntryPoints.get(context.applicationContext, EntryPoint::class.java).apply {
             dataRepository = dataRepository()
             appLogs = appLogs()
             remindersScheduler = remindersScheduler()

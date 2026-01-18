@@ -301,7 +301,8 @@ public class ListWidgetProvider extends AppWidgetProvider {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        dataRepository = EarlyEntryPoints.get(context, EntryPoint.class).dataRepository();
+        dataRepository = EarlyEntryPoints.get(context.getApplicationContext(), EntryPoint.class)
+                .dataRepository();
 
         super.onReceive(context, intent);
 
