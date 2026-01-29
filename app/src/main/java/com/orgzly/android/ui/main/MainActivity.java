@@ -15,7 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -226,6 +229,13 @@ public class MainActivity extends CommonActivity
         mDrawerLayout = findViewById(R.id.drawer_layout);
 
         NavigationView navigationView = mDrawerLayout.findViewById(R.id.drawer_navigation_view);
+
+        // Handle window insets for the NavigationView to avoid navigation bar overlap
+        ViewCompat.setOnApplyWindowInsetsListener(navigationView, (v, windowInsets) -> {
+            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(v.getPaddingLeft(), insets.top, v.getPaddingRight(), insets.bottom);
+            return windowInsets;
+        });
 
         navigationView.setNavigationItemSelectedListener(item -> {
             Intent intent = item.getIntent();
