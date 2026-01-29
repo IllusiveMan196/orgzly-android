@@ -22,41 +22,7 @@
 
         <TextView
             style="@style/WhatsNewVersion"
-            android:text="v1.8.11-beta.4"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix crash on widget interaction on some launchers" />
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.8.11-beta.3"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix crash when pasting previously cut notes" />
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.8.11-beta.2"
-            tools:ignore="HardcodedText" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Set padding for drawer to handle window insets" />
-
-        <com.orgzly.android.ui.views.WhatsNewChange
-            style="@style/WhatsNewChange"
-            app:text="Fix widget saved search reverting" />
-
-
-        <TextView
-            style="@style/WhatsNewVersion"
-            android:text="v1.8.11-beta.1"
+            android:text="v1.8.11"
             tools:ignore="HardcodedText" />
 
         <com.orgzly.android.ui.views.WhatsNewChange
